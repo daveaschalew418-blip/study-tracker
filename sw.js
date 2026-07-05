@@ -1,8 +1,8 @@
 const CACHE_NAME = 'studysync-v2';
 const ASSETS = [
   './',
-  'index.html',
-  'manifest.json'
+  './index.html',
+  './manifest.json'
 ];
 
 // Install the service worker and cache core assets
