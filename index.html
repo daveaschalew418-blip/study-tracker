@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>StudySync Tracker</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="StudySync">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='120' fill='%231e293b'/><path d='M256 110L64 192l192 82 192-82-192-82z' fill='%232563eb'/><path d='M120 245v100c0 40 60 70 136 70s136-30 136-70V245l-136 58-136-58z' fill='%233b82f6'/></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='120' fill='%231e293b'/><path d='M256 110L64 192l192 82 192-82-192-82z' fill='%232563eb'/><path d='M120 245v100c0 40 60 70 136 70s136-30 136-70V245l-136 58-136-58z' fill='%233b82f6'/></svg>">
+
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --primary: #2563eb;
+            --success: #10b981;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --math: #ef4444;
+            --physics: #f59e0b;
+            --chem: #06b6d4;
+            --bio: #8b5cf6;
+        }
+        body.dark {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --primary: #3b82f6;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--text); padding: 12px; display: flex; justify-content: center; min-height: 100vh; }
+        .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 16px; padding-bottom: 40px; }
+        
+        .brand-header { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; }
+        .logo-group { display: flex; align-items: center; gap: 10px; }
+        .logo-svg { width: 38px; height: 38px; border-radius: 9px; }
+        .brand-name { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.5px; }
+        .theme-toggle { background: var(--card); border: 1px solid var(--border); width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+        
+        .widget-banner { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #ffffff; padding: 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 12px; position: relative; overflow: hidden; }
+        .widget-banner::before { content: ''; position: absolute; top: -50px; right: -50px; width: 130px; height: 130px; background: rgba(37, 99, 235, 0.2); filter: blur(40px); border-radius: 50%; }
+        .widget-row { display: flex; justify-content: space-between; align-items: center; z-index: 1; }
+        .widget-stat { display: flex; flex-direction: column; }
+        .widget-number { font-size: 1.6rem; font-weight: 800; color: #ffffff; line-height: 1.2; }
+        .widget-label { font-size: 0.75rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .card { background: var(--card); padding: 18px; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
+        .target-card { border: 2.5px solid var(--primary); text-align: center; display: flex; flex-direction: column; align-items: center; }
+        
+        .badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; color: white; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .badge.Math { background: var(--math); }
+        .badge.Physics { background: var(--physics); }
+        .badge.Chemistry { background: var(--chem); }
+        .badge.Biology { background: var(--bio); }
+
+        .unit-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 4px; line-height: 1.3; letter-spacing: -0.3px; }
+        .unit-grade { color: var(--text-muted); font-size: 0.9rem; font-weight: 600; margin-bottom: 16px; }
+        
+        .action-btn { background: var(--success); color: white; border: none; padding: 14px 24px; border-radius: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; width: 100%; transition: transform 0.1s; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
+        .action-btn:active { transform: scale(0.98); }
+        
+        .list-section { display: flex; flex-direction: column; gap: 8px; }
+        .list-header { font-size: 1rem; font-weight: 700; color: var(--text-muted); padding-left: 4px; margin-top: 6px; display: flex; justify-content: space-between; align-items: center; }
+        .count-tag { font-size: 0.8rem; background: var(--border); color: var(--text); padding: 2px 8px; border-radius: 12px; }
+
+        .scroll-container { max-height: 260px; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 8px; }
+        .scroll-container::-webkit-scrollbar { width: 4px; }
+        .scroll-container::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+        .unit-item { background: var(--card); border: 1px solid var(--border); padding: 12px 14px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; }
+        .unit-item.done { opacity: 0.55; background: rgba(16, 185, 129, 0.03); }
+        .unit-item h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; line-height: 1.2; }
+        .unit-item p { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+        .check-icon { color: var(--success); font-weight: bold; font-size: 1.1rem; }
+        
+        .progress-bar-container { width: 100%; background: rgba(255,255,255,0.1); height: 8px; border-radius: 4px; overflow: hidden; margin-top: 4px; }
+        .progress-bar { height: 100%; background: var(--success); transition: width 0.4s ease; width: 0%; }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="brand-header">
+            <div class="logo-group">
+                <svg class="logo-svg" viewBox="0 0 512 512">
+                    <rect width="512" height="512" rx="120" fill="#1e293b"/>
+                    <path d="M256 110L64 192l192 82 192-82-192-82z" fill="#2563eb"/>
+                    <path d="M120 245v100c0 40 60 70 136 70s136-30 136-70V245l-136 58-136-58z" fill="#3b82f6"/>
+                </svg>
+                <span class="brand-name">StudySync</span>
+            </div>
+            <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()">🌙</button>
+        </div>
+
+        <div class="widget-banner">
+            <div class="widget-row">
+                <div class="widget-stat">
+                    <span class="widget-number" id="widgetDays">57</span>
+                    <span class="widget-label">Days Left</span>
+                </div>
+                <div class="widget-stat" style="text-align: right;">
+                    <span class="widget-number" id="widgetCompleted">0/57</span>
+                    <span class="widget-label">Completed</span>
+                </div>
+            </div>
+            <div>
+                <div class="widget-row" style="margin-bottom: 2px;">
+                    <span class="widget-label" style="color: #ffffff; font-size: 0.7rem;">Course Completion Progress</span>
+                    <span class="widget-label" id="widgetPercent" style="color: var(--success);">0%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card target-card" id="todayTarget"></div>
+
+        <div class="list-section">
+            <h3 class="list-header">Upcoming Plan <span class="count-tag" id="upcomingCount">0</span></h3>
+            <div class="scroll-container" id="upcomingList"></div>
+        </div>
+
+        <div class="list-section">
+            <h3 class="list-header">Completed Lessons <span class="count-tag" id="completedCount" style="background-color:rgba(16,185,129,0.15); color:var(--success);">0</span></h3>
+            <div class="scroll-container" id="completedList"></div>
+        </div>
+    </div>
+
+    <script>
+        const curriculumData = [
+            // === MATH ===
+            { subject: "Math", grade: 9, title: "Unit 1: Further on Sets" },
+            { subject: "Math", grade: 9, title: "Unit 2: The Number System" },
+            { subject: "Math", grade: 9, title: "Unit 3: Solving Equations" },
+            { subject: "Math", grade: 9, title: "Unit 4: Solving Inequalities" },
+            { subject: "Math", grade: 9, title: "Unit 5: Introduction to Trigonometry" },
+            { subject: "Math", grade: 9, title: "Unit 6: Regular Polygons" },
+            { subject: "Math", grade: 9, title: "Unit 7: Congruency and Similarity" },
+            { subject: "Math", grade: 9, title: "Unit 8: Vectors in Two Dimensions" },
+            { subject: "Math", grade: 9, title: "Unit 9: Statistics and Probability" },
+            { subject: "Math", grade: 10, title: "Unit 1: Relations and Functions" },
+            { subject: "Math", grade: 10, title: "Unit 2: Polynomial Functions" },
+            { subject: "Math", grade: 10, title: "Unit 3: Exponential and Logarithmic Functions" },
+            { subject: "Math", grade: 10, title: "Unit 4: Trigonometric Functions" },
+            { subject: "Math", grade: 10, title: "Unit 5: Circles" },
+            { subject: "Math", grade: 10, title: "Unit 6: Solid Figures" },
+            { subject: "Math", grade: 10, title: "Unit 7: Coordinate Geometry" },
+            { subject: "Math", grade: 11, title: "Unit 1: Relations and Functions" },
+            { subject: "Math", grade: 11, title: "Unit 2: Rational Expressions and Rational Functions" },
+            { subject: "Math", grade: 11, title: "Unit 3: Matrices" },
+            { subject: "Math", grade: 11, title: "Unit 4: Determinants and Their Properties" },
+            { subject: "Math", grade: 11, title: "Unit 5: Vectors" },
+            { subject: "Math", grade: 11, title: "Unit 6: Transformations of the Plane" },
+            { subject: "Math", grade: 11, title: "Unit 7: Statistics" },
+            { subject: "Math", grade: 11, title: "Unit 8: Probability" },
+
+            // === PHYSICS ===
+            { subject: "Physics", grade: 9, title: "Unit 1: Physics and Human Society" },
+            { subject: "Physics", grade: 9, title: "Unit 2: Physical Quantities" },
+            { subject: "Physics", grade: 9, title: "Unit 3: Motion in a Straight Line" },
+            { subject: "Physics", grade: 9, title: "Unit 4: Force, Work, Energy and Power" },
+            { subject: "Physics", grade: 9, title: "Unit 5: Simple Machines" },
+            { subject: "Physics", grade: 9, title: "Unit 6: Mechanical Oscillation and Sound Wave" },
+            { subject: "Physics", grade: 9, title: "Unit 7: Temperature and Thermometry" },
+            { subject: "Physics", grade: 10, title: "Unit 1: Vector Quantities" },
+            { subject: "Physics", grade: 10, title: "Unit 2: Uniformly Accelerated Motion" },
+            { subject: "Physics", grade: 10, title: "Unit 3: Elasticity and Static Equilibrium of Rigid Body" },
+            { subject: "Physics", grade: 10, title: "Unit 4: Static and Current Electricity" },
+            { subject: "Physics", grade: 10, title: "Unit 5: Magnetism" },
+            { subject: "Physics", grade: 10, title: "Unit 6: Electromagnetic Waves and Geometrical Optics" },
+            { subject: "Physics", grade: 11, title: "Unit 1: Physics and Human Society" },
+            { subject: "Physics", grade: 11, title: "Unit 2: Vectors" },
+            { subject: "Physics", grade: 11, title: "Unit 3: Motion in One and Two Dimensions" },
+            { subject: "Physics", grade: 11, title: "Unit 4: Dynamics" },
+            { subject: "Physics", grade: 11, title: "Unit 5: Heat Conduction and Calorimetry" },
+            { subject: "Physics", grade: 11, title: "Unit 6: Electrostatics and Electric Circuit" },
+            { subject: "Physics", grade: 11, title: "Unit 7: Nuclear Physics" },
+
+            // === CHEMISTRY ===
+            { subject: "Chemistry", grade: 9, title: "Unit 1: Chemistry and Its Importance" },
+            { subject: "Chemistry", grade: 9, title: "Unit 2: Measurements and Scientific Methods" },
+            { subject: "Chemistry", grade: 9, title: "Unit 3: Structure of the Atom" },
+            { subject: "Chemistry", grade: 9, title: "Unit 4: Periodic Classification of Elements" },
+            { subject: "Chemistry", grade: 9, title: "Unit 5: Chemical Bonding" },
+            { subject: "Chemistry", grade: 10, title: "Unit 1: Chemical Reactions and Stoichiometry" },
+            { subject: "Chemistry", grade: 10, title: "Unit 2: Solutions" },
+            { subject: "Chemistry", grade: 10, title: "Unit 3: Important Inorganic Compounds" },
+            { subject: "Chemistry", grade: 10, title: "Unit 4: Energy Changes and Electrochemistry" },
+            { subject: "Chemistry", grade: 10, title: "Unit 5: Metals and Nonmetals" },
+            { subject: "Chemistry", grade: 10, title: "Unit 6: Hydrocarbons and Their Natural Sources" },
+            { subject: "Chemistry", grade: 11, title: "Unit 1: Atomic Structure and Periodic Properties of the Elements" },
+            { subject: "Chemistry", grade: 11, title: "Unit 2: Chemical Bonding" },
+            { subject: "Chemistry", grade: 11, title: "Unit 3: Physical States of Matter" },
+            { subject: "Chemistry", grade: 11, title: "Unit 4: Chemical Kinetics" },
+            { subject: "Chemistry", stroke: "box", grade: 11, title: "Unit 5: Chemical Equilibrium" },
+            { subject: "Chemistry", grade: 11, title: "Unit 6: Some Important Oxygen-Containing Organic Compounds" },
+
+            // === BIOLOGY ===
+            { subject: "Biology", grade: 9, title: "Unit 1: Introduction to Biology" },
+            { subject: "Biology", grade: 9, title: "Unit 2: Characteristics and Classification of Organisms" },
+            { subject: "Biology", grade: 9, title: "Unit 3: Cells" },
+            { subject: "Biology", grade: 9, title: "Unit 4: Reproduction" },
+            { subject: "Biology", grade: 9, title: "Unit 5: Human Health, Nutrition and Diseases" },
+            { subject: "Biology", grade: 9, title: "Unit 6: Ecology" },
+            { subject: "Biology", grade: 10, title: "Unit 1: Sub-Fields of Biology" },
+            { subject: "Biology", grade: 10, title: "Unit 2: Plants" },
+            { subject: "Biology", grade: 10, title: "Unit 3: Biochemical Molecules" },
+            { subject: "Biology", grade: 10, title: "Unit 4: Cell Division" },
+            { subject: "Biology", grade: 10, title: "Unit 5: Human Biology" },
+            { subject: "Biology", grade: 10, title: "Unit 6: Ecological Interactions" },
+            { subject: "Biology", grade: 11, title: "Unit One: Biology and Technology" },
+            { subject: "Biology", grade: 11, title: "Unit Two: Animals" },
+            { subject: "Biology", grade: 11, title: "Unit Three: Enzymes" },
+            { subject: "Biology", grade: 11, title: "Unit Four: Genetics" },
+            { subject: "Biology", grade: 11, title: "Unit Five: The Human Body Systems" },
+            { subject: "Biology", grade: 11, title: "Unit Six: Population and Natural Resources" }
+        ];
+
+        if (localStorage.getItem('studysync_theme') === 'dark') {
+            document.body.classList.add('dark');
+            document.getElementById('themeToggleBtn').innerText = "☀️";
+        }
+
+        let currentIndex = parseInt(localStorage.getItem('studysync_index_isolated')) || 0;
+
+        function markComplete() {
+            if (currentIndex < curriculumData.length) {
+                currentIndex++;
+                localStorage.setItem('studysync_index_isolated', currentIndex);
+                renderApp();
+            }
+        }
+
+        function renderApp() {
+            const targetContainer = document.getElementById('todayTarget');
+            const upcomingList = document.getElementById('upcomingList');
+            const completedList = document.getElementById('completedList');
+            
+            upcomingList.innerHTML = "";
+            completedList.innerHTML = "";
+
+            const total = curriculumData.length;
+            const remainingDays = total - currentIndex;
+            const percent = Math.round((currentIndex / total) * 100);
+
+            document.getElementById('widgetDays').innerText = remainingDays;
+            document.getElementById('widgetCompleted').innerText = `${currentIndex}/${total}`;
+            document.getElementById('widgetPercent').innerText = `${percent}%`;
+            document.getElementById('progressBar').style.width = `${percent}%`;
+
+            if (currentIndex >= total) {
+                targetContainer.innerHTML = `
+                    <h2 style="font-size: 2.2rem; margin-bottom: 6px;">👑</h2>
+                    <h2 class="unit-title">All Tracks Completed!</h2>
+                    <p style="color: var(--text-muted); font-size:0.9rem;">You completed all 57 syllabus items smoothly.</p>
+                `;
+            } else {
+                const currentUnit = curriculumData[currentIndex];
+                targetContainer.innerHTML = `
+                    <span class="badge ${currentUnit.subject}">${currentUnit.subject}</span>
+                    <h2 class="unit-title">${currentUnit.title}</h2>
+                    <p class="unit-grade">Grade ${currentUnit.grade}</p>
+                    <button class="action-btn" onclick="markComplete()">🎯 Mark Lesson Done</button>
+                `;
+            }
+
+            let upCount = 0;
+            let doneCount = 0;
+
+            curriculumData.forEach((unit, index) => {
+                const layout = `
+                    <div class="unit-item ${index < currentIndex ? 'done' : ''}">
+                        <div>
+                            <h4>${unit.title}</h4>
+                            <p>${unit.subject} • Grade ${unit.grade}</p>
+                        </div>
+                        ${index < currentIndex ? '<span class="check-icon">✓</span>' : ''}
+                    </div>
+                `;
+                if (index < currentIndex) {
+                    completedList.insertAdjacentHTML('afterbegin', layout);
+                    doneCount++;
+                } else if (index > currentIndex) {
+                    upcomingList.insertAdjacentHTML('beforeend', layout);
+                    upCount++;
+                }
+            });
+
+            document.getElementById('upcomingCount').innerText = upCount;
+            document.getElementById('completedCount').innerText = doneCount;
+
+            if (upCount === 0) upcomingList.innerHTML = "<p style='color: var(--text-muted); font-size: 0.85rem; padding: 4px;'>No remaining modules.</p>";
+            if (doneCount === 0) completedList.innerHTML = "<p style='color: var(--text-muted); font-size: 0.85rem; padding: 4px;'>Completed lessons will show here.</p>";
+        }
+
+        renderApp();
+    </script>
+</body>
+</html>
