@@ -1,11 +1,12 @@
-const CACHE_NAME = 'studysync-v2';
+const CACHE_NAME = 'studysync-v3';
 const ASSETS = [
   './',
   './index.html',
-  './manifest.json'
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
-// Install the service worker and cache core assets
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -14,7 +15,6 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// Activate and clean up old caches
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) => {
@@ -29,7 +29,6 @@ self.addEventListener('activate', (e) => {
   );
 });
 
-// Serve cached items when offline, fallback to network
 self.addEventListener('fetch', (e) => {
   e.respondWith(
     caches.match(e.request).then((cachedResponse) => {
