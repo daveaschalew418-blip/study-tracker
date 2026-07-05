@@ -1,0 +1,23 @@
+{
+  "id": "studysync-tracker-app-v1",
+  "short_name": "StudySync",
+  "name": "StudySync Tracker",
+  "scope": "./",
+  "start_url": "index.html",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' width='192' height='192'><rect width='512' height='512' rx='120' fill='%231e293b'/><path d='M256 110L64 192l192 82 192-82-192-82z' fill='%232563eb'/><path d='M120 245v100c0 40 60 70 136 70s136-30 136-70V245l-136 58-136-58z' fill='%233b82f6'/></svg>",
+      "type": "image/svg+xml",
+      "sizes": "192x192"
+    },
+    {
+      "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' width='512' height='512'><rect width='512' height='512' rx='120' fill='%231e293b'/><path d='M256 110L64 192l192 82 192-82-192-82z' fill='%232563eb'/><path d='M120 245v100c0 40 60 70 136 70s136-30 136-70V245l-136 58-136-58z' fill='%233b82f6'/></svg>",
+      "type": "image/svg+xml",
+      "sizes": "512x512"
+    }
+  ],
+  "background_color": "#0f172a",
+  "theme_color": "#2563eb",
+  "display": "standalone",
+  "orientation": "portrait"
+}
