@@ -2,7 +2,7 @@
   "id": "/study-tracker-app/",
   "short_name": "StudySync",
   "name": "StudySync Tracker",
-  "start_url": "index.html",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
