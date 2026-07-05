@@ -201,7 +201,7 @@
             { subject: "Chemistry", grade: 11, title: "Unit 2: Chemical Bonding" },
             { subject: "Chemistry", grade: 11, title: "Unit 3: Physical States of Matter" },
             { subject: "Chemistry", grade: 11, title: "Unit 4: Chemical Kinetics" },
-            { subject: "Chemistry", stroke: "box", grade: 11, title: "Unit 5: Chemical Equilibrium" },
+            { subject: "Chemistry", grade: 11, title: "Unit 5: Chemical Equilibrium" },
             { subject: "Chemistry", grade: 11, title: "Unit 6: Some Important Oxygen-Containing Organic Compounds" },
 
             // === BIOLOGY ===
@@ -300,6 +300,15 @@
 
             if (upCount === 0) upcomingList.innerHTML = "<p style='color: var(--text-muted); font-size: 0.85rem; padding: 4px;'>No remaining modules.</p>";
             if (doneCount === 0) completedList.innerHTML = "<p style='color: var(--text-muted); font-size: 0.85rem; padding: 4px;'>Completed lessons will show here.</p>";
+        }
+
+        // Service Worker Activation Script Rules
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker Active', reg))
+                    .catch(err => console.error('Registration failed', err));
+            });
         }
 
         renderApp();
