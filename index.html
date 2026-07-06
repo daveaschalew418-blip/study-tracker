@@ -19,6 +19,7 @@
             --card: #ffffff;
             --primary: #2563eb;
             --success: #10b981;
+            --danger: #ef4444;
             --text: #0f172a;
             --text-muted: #64748b;
             --border: #e2e8f0;
@@ -26,25 +27,31 @@
             --physics: #f59e0b;
             --chem: #06b6d4;
             --bio: #8b5cf6;
+            --input-bg: #ffffff;
         }
         body.dark {
             --bg: #0f172a;
             --card: #1e293b;
             --primary: #3b82f6;
+            --success: #10b981;
+            --danger: #f87171;
             --text: #f8fafc;
             --text-muted: #94a3b8;
             --border: #334155;
+            --input-bg: #0f172a;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg); color: var(--text); padding: 12px; display: flex; justify-content: center; min-height: 100vh; }
-        .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 16px; padding-bottom: 40px; position: relative; }
+        .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 16px; padding-bottom: 80px; position: relative; }
         
+        /* Navigation Top Bar */
         .brand-header { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; }
         .logo-group { display: flex; align-items: center; gap: 10px; }
         .logo-img { width: 38px; height: 38px; border-radius: 8px; }
         .brand-name { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.5px; }
         .theme-toggle { background: var(--card); border: 1px solid var(--border); width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
         
+        /* Premium Duolingo Streak Style Inside-App Banner Widget */
         .widget-banner { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #ffffff; padding: 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 12px; position: relative; overflow: hidden; }
         .widget-banner::before { content: ''; position: absolute; top: -50px; right: -50px; width: 130px; height: 130px; background: rgba(37, 99, 235, 0.2); filter: blur(40px); border-radius: 50%; }
         .widget-row { display: flex; justify-content: space-between; align-items: center; z-index: 1; }
@@ -52,6 +59,7 @@
         .widget-number { font-size: 1.6rem; font-weight: 800; color: #ffffff; line-height: 1.2; }
         .widget-label { font-size: 0.75rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
         
+        /* Base Component Card UI */
         .card { background: var(--card); padding: 18px; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
         .target-card { border: 2.5px solid var(--primary); text-align: center; display: flex; flex-direction: column; align-items: center; }
         
@@ -67,13 +75,14 @@
         .action-btn { background: var(--success); color: white; border: none; padding: 14px 24px; border-radius: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; width: 100%; transition: transform 0.1s; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
         .action-btn:active { transform: scale(0.98); }
 
-        /* NotebookLM AI Prompt Buttons */
+        /* NotebookLM AI Prompt Generator Layout Grid */
         .prompt-grid { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; width: 100%; border-top: 1px dashed var(--border); padding-top: 16px; }
         .prompt-btn { flex: 1 1 30%; background: var(--bg); color: var(--text); border: 1px solid var(--border); padding: 10px 4px; border-radius: 10px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: background 0.2s; display: flex; flex-direction: column; align-items: center; gap: 4px; }
         .prompt-btn:active { background: var(--border); }
         .prompt-btn span { font-size: 1.2rem; }
         .prompt-title { width: 100%; font-size: 0.8rem; color: var(--text-muted); font-weight: 700; margin-top: 4px; text-align: left; }
         
+        /* Feed Section Scroll Containers */
         .list-section { display: flex; flex-direction: column; gap: 8px; }
         .list-header { font-size: 1rem; font-weight: 700; color: var(--text-muted); padding-left: 4px; margin-top: 6px; display: flex; justify-content: space-between; align-items: center; }
         .count-tag { font-size: 0.8rem; background: var(--border); color: var(--text); padding: 2px 8px; border-radius: 12px; }
@@ -91,11 +100,52 @@
         .progress-bar-container { width: 100%; background: rgba(255,255,255,0.1); height: 8px; border-radius: 4px; overflow: hidden; margin-top: 4px; }
         .progress-bar { height: 100%; background: var(--success); transition: width 0.4s ease; width: 0%; }
 
-        /* Toast Notification */
-        #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 10px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 0.9rem; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        /* Universal Tab Controls */
+        .app-tab { display: none; flex-direction: column; gap: 16px; }
+        .app-tab.active { display: flex; }
+
+        /* Note Beautifier & Quiz Form Elements */
+        .textarea-input { width: 100%; height: 160px; padding: 12px; border-radius: 14px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); font-size: 0.9rem; resize: none; outline: none; margin-bottom: 12px; }
+        .textarea-input:focus { border-color: var(--primary); }
+        .primary-btn { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; width: 100%; }
+        
+        /* Clean rendered Output Viewer Styles */
+        .formatted-note-view { line-height: 1.6; font-size: 0.95rem; color: var(--text); border-top: 1px dashed var(--border); margin-top: 8px; padding-top: 14px; }
+        .formatted-note-view h1, .formatted-note-view h2, .formatted-note-view h3 { color: var(--primary); margin: 16px 0 8px 0; font-weight: 800; line-height: 1.2; }
+        .formatted-note-view h1 { font-size: 1.4rem; }
+        .formatted-note-view h2 { font-size: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+        .formatted-note-view h3 { font-size: 1.05rem; }
+        .formatted-note-view strong { background: rgba(37, 99, 235, 0.08); padding: 1px 4px; border-radius: 4px; color: var(--primary); font-weight: 700; }
+        body.dark .formatted-note-view strong { background: rgba(59, 130, 246, 0.2); color: #93c5fd; }
+        .formatted-note-view li { margin-left: 18px; margin-bottom: 4px; list-style-type: square; }
+        .formatted-note-view br { content: ""; display: block; margin: 10px 0; }
+
+        /* Interactive Dynamic Quiz Interface Engine */
+        .quiz-container { display: flex; flex-direction: column; gap: 16px; margin-top: 12px; }
+        .quiz-q-card { background: var(--bg); border: 1px solid var(--border); padding: 14px; border-radius: 14px; display: flex; flex-direction: column; gap: 10px; }
+        .quiz-q-title { font-size: 0.95rem; font-weight: 700; }
+        .quiz-options-list { display: flex; flex-direction: column; gap: 6px; }
+        .quiz-option-item { background: var(--card); border: 1px solid var(--border); padding: 10px 12px; border-radius: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.15s; }
+        .quiz-option-item:hover { border-color: var(--primary); }
+        .quiz-option-item.selected { background: rgba(37, 99, 235, 0.08); border-color: var(--primary); }
+        body.dark .quiz-option-item.selected { background: rgba(59, 130, 246, 0.15); }
+        
+        /* Correction Answer States */
+        .quiz-option-item.correct-fill { background: rgba(16, 185, 129, 0.15) !important; border-color: var(--success) !important; color: var(--success); }
+        .quiz-option-item.wrong-fill { background: rgba(239, 68, 68, 0.12) !important; border-color: var(--danger) !important; color: var(--danger); }
+        .quiz-score-banner { text-align: center; font-size: 1.1rem; font-weight: 800; color: var(--success); margin-bottom: 8px; }
+
+        /* Mobile Bottom App Bar Navigation Layout */
+        .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 64px; background: var(--card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 999; box-shadow: 0 -4px 10px rgba(0,0,0,0.03); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: var(--text-muted); cursor: pointer; font-size: 0.7rem; font-weight: 700; width: 33.3%; height: 100%; }
+        .nav-item span { font-size: 1.3rem; }
+        .nav-item.active { color: var(--primary); }
+
+        /* Toast Popup Alerts */
+        #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 10px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 80px; transform: translateX(-50%); font-size: 0.9rem; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
-        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
-        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 80px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 80px; opacity: 1;} to {bottom: 0; opacity: 0;} }
     </style>
 </head>
 <body>
@@ -131,19 +181,57 @@
             </div>
         </div>
 
-        <div class="card target-card" id="todayTarget"></div>
+        <div id="tab-tracker" class="app-tab active">
+            <div class="card target-card" id="todayTarget"></div>
 
-        <div class="list-section">
-            <h3 class="list-header">Upcoming Plan <span class="count-tag" id="upcomingCount">0</span></h3>
-            <div class="scroll-container" id="upcomingList"></div>
+            <div class="list-section">
+                <h3 class="list-header">Upcoming Plan <span class="count-tag" id="upcomingCount">0</span></h3>
+                <div class="scroll-container" id="upcomingList"></div>
+            </div>
+
+            <div class="list-section">
+                <h3 class="list-header">Completed Lessons <span class="count-tag" id="completedCount" style="background-color:rgba(16,185,129,0.15); color:var(--success);">0</span></h3>
+                <div class="scroll-container" id="completedList"></div>
+            </div>
         </div>
 
-        <div class="list-section">
-            <h3 class="list-header">Completed Lessons <span class="count-tag" id="completedCount" style="background-color:rgba(16,185,129,0.15); color:var(--success);">0</span></h3>
-            <div class="scroll-container" id="completedList"></div>
+        <div id="tab-notes" class="app-tab">
+            <div class="card">
+                <h3 style="margin-bottom: 10px; font-weight: 800;">📝 Note Beautifier</h3>
+                <textarea class="textarea-input" id="noteRawInput" placeholder="Paste your raw text or study notes output straight from NotebookLM here..."></textarea>
+                <button class="primary-btn" onclick="processBeautifyNote()">✨ Beautify Layout</button>
+                
+                <div class="formatted-note-view" id="noteOutputView" style="display: none;"></div>
+            </div>
+        </div>
+
+        <div id="tab-quiz" class="app-tab">
+            <div class="card">
+                <h3 style="margin-bottom: 10px; font-weight: 800;">📋 Live Interactive Quiz</h3>
+                <textarea class="textarea-input" id="quizRawInput" placeholder="Paste the entire multiple-choice quiz and Answer Key from NotebookLM here..."></textarea>
+                <button class="primary-btn" style="background: var(--success);" onclick="generateInteractiveQuiz()">🚀 Load Interactive Test</button>
+                
+                <div id="quizAppBody" style="margin-top: 16px; display: none;">
+                    <div class="quiz-score-banner" id="quizScoreDisplay"></div>
+                    <div class="quiz-container" id="quizRenderContainer"></div>
+                    <button class="primary-btn" id="quizSubmitBtn" style="margin-top: 16px; background: var(--primary);" onclick="evaluateQuizAnswers()">Verify My Answers</button>
+                </div>
+            </div>
         </div>
 
         <div id="toast">Prompt copied to clipboard!</div>
+
+        <nav class="bottom-nav">
+            <div class="nav-item active" id="btn-nav-tracker" onclick="switchActiveTab('tracker')">
+                <span>🏠</span>Track
+            </div>
+            <div class="nav-item" id="btn-nav-notes" onclick="switchActiveTab('notes')">
+                <span>📝</span>Note View
+            </div>
+            <div class="nav-item" id="btn-nav-quiz" onclick="switchActiveTab('quiz')">
+                <span>❓</span>Live Quiz
+            </div>
+        </nav>
     </div>
 
     <script>
@@ -236,11 +324,15 @@
             { subject: "Biology", grade: 11, title: "Unit Six: Population and Natural Resources" }
         ];
 
+        let currentIndex = parseInt(localStorage.getItem('studysync_index_finalv2')) || 0;
+        let runningQuizData = { questions: [], key: {} };
+        let selectedUserAnswers = {};
+
+        // Theme management
         if (localStorage.getItem('studysync_theme') === 'dark') {
             document.body.classList.add('dark');
             document.getElementById('themeToggleBtn').innerText = "☀️";
         }
-
         function toggleTheme() {
             if (document.body.classList.contains('dark')) {
                 document.body.classList.remove('dark');
@@ -253,7 +345,15 @@
             }
         }
 
-        let currentIndex = parseInt(localStorage.getItem('studysync_index_finalv2')) || 0;
+        // Bottom Navigation Tab Engine Switches
+        function switchActiveTab(tabName) {
+            document.querySelectorAll('.app-tab').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            document.getElementById(`btn-nav-${tabName}`).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
         function markComplete() {
             if (currentIndex < curriculumData.length) {
@@ -263,7 +363,7 @@
             }
         }
 
-        // Prompt Generator Logic
+        // Automated System Prompt Creator Logic
         window.copyPrompt = function(type, subject, grade, title) {
             let promptText = "";
             const context = `Grade ${grade} ${subject} - ${title}`;
@@ -273,20 +373,18 @@
             } else if (type === 'flashcard') {
                 promptText = `Based on the uploaded documents for ${context}, generate a complete set of flashcards. Cover every important concept, formula, and vocabulary word. Format exactly like this for easy copying:\n\nFront: [Question/Term]\nBack: [Answer/Definition]`;
             } else if (type === 'quiz') {
-                promptText = `Act as a strict but fair teacher. Create a 10-question multiple-choice quiz covering all the crucial material from the uploaded documents for ${context}. Provide 4 options (A, B, C, D) for each. At the very bottom, provide an Answer Key with a brief explanation of why the correct answer is right.`;
+                promptText = `Act as a strict but fair teacher. Create a 10-question multiple-choice quiz covering all the crucial material from the uploaded documents for ${context}. Provide 4 options (A, B, C, D) for each. At the very bottom, provide an Answer Key matching exactly this layout format (1. A, 2. B, 3. C) with a brief explanation of why the correct answer is right.`;
             } else if (type === 'terms') {
                 promptText = `Scan the uploaded documents for ${context} and extract every single important vocabulary term, concept, and law/theorem. Do not skip any crucial terms. Present them as a clear, easy-to-read glossary with the term bolded followed by its precise definition.`;
             } else if (type === 'video') {
                 promptText = `Act as an engaging, highly visual educational YouTuber like CrashCourse. Write a brief explanation script or a list of highly visual analogies to explain the hardest core concepts of ${context} to a high schooler. Make it memorable, fun, and easy to visualize.`;
             } else if (type === 'questions') {
-                promptText = `Scan the uploaded textbook documents for ${context} and extract every single review question, practice problem, and end-of-chapter exercise. Present them as a clearly numbered list so I can practice answering them. Do not include the answers yet.`;
+                promptText = `Scan the uploaded textbook documents for ${context} and extract every single review question, practice problem, and end-of-chapter exercise. Present them as a clearly numbered list so I can practice answering them. At the very bottom of the response, write 'Answer Key:' followed by a numbered list matching the question numbers with their exact correct answers.`;
             }
 
             navigator.clipboard.writeText(promptText).then(() => {
                 showToast(`✅ ${type.charAt(0).toUpperCase() + type.slice(1)} prompt copied! Paste in NotebookLM.`);
-            }).catch(err => {
-                console.error('Failed to copy text: ', err);
-            });
+            }).catch(err => console.error('Failed to copy text: ', err));
         };
 
         function showToast(message) {
@@ -294,6 +392,184 @@
             toast.innerText = message;
             toast.className = "show";
             setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+
+        // FEATURE 1: Native Markdown & Plain Note Beautifier Render Engine
+        function processBeautifyNote() {
+            const rawText = document.getElementById('noteRawInput').value.trim();
+            const view = document.getElementById('noteOutputView');
+            if(!rawText) return;
+
+            // Safe HTML conversion without changing or dropping raw content text strings
+            let cleanHtml = rawText
+                .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") // Escape HTML syntax
+                .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Convert bold markers safely
+                .replace(/^\s*-\s*(.*$)/gim, '<li>$1</li>') // Dynamic list layouts
+                .replace(/\n/g, '<br>'); // Simple soft breaks preservation
+
+            view.innerHTML = cleanHtml;
+            view.style.display = "block";
+            showToast("✨ Notes formatted elegantly!");
+        }
+
+        // FEATURE 2: Intelligent Live Multiple-Choice Parsing & Interactive Quiz Player
+        function generateInteractiveQuiz() {
+            const rawText = document.getElementById('quizRawInput').value;
+            const container = document.getElementById('quizRenderContainer');
+            const body = document.getElementById('quizAppBody');
+            
+            if(!rawText.trim()) return;
+
+            // Step 1: Detect answer key split coordinates
+            const lowerText = rawText.toLowerCase();
+            let boundaryIndex = lowerText.lastIndexOf("answer key");
+            if (boundaryIndex === -1) boundaryIndex = lowerText.lastIndexOf("answers:");
+            
+            let questionsTextSection = rawText;
+            let answerKeyTextSection = "";
+            
+            if (boundaryIndex !== -1) {
+                questionsTextSection = rawText.substring(0, boundaryIndex);
+                answerKeyTextSection = rawText.substring(boundaryIndex);
+            }
+
+            // Step 2: Line Parsing Loop loops through Questions payload
+            const lines = questionsTextSection.split('\n');
+            let arrayList = [];
+            let currentQ = null;
+
+            lines.forEach(line => {
+                let trimmed = line.trim();
+                if(!trimmed) return;
+
+                // Match typical multi-choice number indicators: '1. What is...' or '1) What is...'
+                let qMatch = trimmed.match(/^(\d+)[\.\)]\s*(.*)/);
+                if (qMatch) {
+                    if (currentQ) arrayList.push(currentQ);
+                    currentQ = { id: qMatch[1], text: qMatch[2], options: [] };
+                    return;
+                }
+
+                // Match single dynamic list option choices: 'A. Option text' or 'B) Option text'
+                let oMatch = trimmed.match(/^([A-D])[\.\)]\s*(.*)/i);
+                if (oMatch && currentQ) {
+                    currentQ.options.push({ letter: oMatch[1].toUpperCase(), text: oMatch[2] });
+                    return;
+                }
+
+                // Append multi-line overflow context securely back into question body header
+                if (currentQ && !oMatch && !qMatch) {
+                    currentQ.text += " " + trimmed;
+                }
+            });
+            if (currentQ) arrayList.push(currentQ);
+
+            // Step 3: Parse correct answer letter correlations inside tracking maps
+            let structuralMap = {};
+            const keyLines = answerKeyTextSection.split('\n');
+            keyLines.forEach(line => {
+                let ansMatch = line.trim().match(/^(\d+)[\.\):\s]+\s*([A-D])/i);
+                if(ansMatch) {
+                    structuralMap[ansMatch[1]] = ansMatch[2].toUpperCase();
+                }
+            });
+
+            // Fallback: If no explicit map coordinates parsed, parse answers directly inside block
+            if(Object.keys(structuralMap).length === 0) {
+                let matches = answerKeyTextSection.match(/(\d+)[\.\):\s]+\s*([A-D])/gi);
+                if(matches) {
+                    matches.forEach(item => {
+                        let dynamicMatch = item.match(/(\d+)[\.\):\s]+\s*([A-D])/i);
+                        if(dynamicMatch) structuralMap[dynamicMatch[1]] = dynamicMatch[2].toUpperCase();
+                    });
+                }
+            }
+
+            // Load parsed metadata into state stores
+            runningQuizData.questions = arrayList;
+            runningQuizData.key = structuralMap;
+            selectedUserAnswers = {};
+
+            // Render layouts to structural DOM
+            container.innerHTML = "";
+            document.getElementById('quizScoreDisplay').innerText = "";
+            document.getElementById('quizSubmitBtn').style.display = "block";
+
+            if(arrayList.length === 0) {
+                container.innerHTML = "<p style='color:var(--danger); font-size:0.85rem;'>Could not detect multiple choice structure. Please check layout syntax format requirements.</p>";
+                body.style.display = "block";
+                return;
+            }
+
+            arrayList.forEach(q => {
+                let qCard = document.createElement('div');
+                qCard.className = "quiz-q-card";
+                qCard.innerHTML = `<div class="quiz-q-title">${q.id}. ${q.text}</div>`;
+                
+                let optList = document.createElement('div');
+                optList.className = "quiz-options-list";
+
+                q.options.forEach(opt => {
+                    let optItem = document.createElement('div');
+                    optItem.className = "quiz-option-item";
+                    optItem.id = `opt-item-${q.id}-${opt.letter}`;
+                    optItem.innerText = `${opt.letter}) ${opt.text}`;
+                    
+                    optItem.onclick = () => {
+                        // De-select alternative options inside same question index track
+                        q.options.forEach(x => {
+                            let sibling = document.getElementById(`opt-item-${q.id}-${x.letter}`);
+                            if(sibling) sibling.classList.remove('selected');
+                        });
+                        optItem.classList.add('selected');
+                        selectedUserAnswers[q.id] = opt.letter;
+                    };
+                    optList.appendChild(optItem);
+                });
+                
+                qCard.appendChild(optList);
+                container.appendChild(qCard);
+            });
+
+            body.style.display = "block";
+            showToast(`🚀 Loaded ${arrayList.length} interactive questions!`);
+        }
+
+        function evaluateQuizAnswers() {
+            let score = 0;
+            let totalQs = runningQuizData.questions.length;
+            if(totalQs === 0) return;
+
+            runningQuizData.questions.forEach(q => {
+                let selected = selectedUserAnswers[q.id];
+                let correct = runningQuizData.key[q.id];
+
+                q.options.forEach(opt => {
+                    let optItem = document.getElementById(`opt-item-${q.id}-${opt.letter}`);
+                    if(optItem) {
+                        optItem.classList.remove('selected', 'correct-fill', 'wrong-fill');
+                        
+                        // Highlight target visual layout markers
+                        if (opt.letter === correct) {
+                            optItem.classList.add('correct-fill');
+                        }
+                        if (selected === opt.letter && selected !== correct) {
+                            optItem.classList.add('wrong-fill');
+                        }
+                    }
+                });
+
+                if(selected === correct) score++;
+            });
+
+            const scoreDisplay = document.getElementById('quizScoreDisplay');
+            scoreDisplay.innerText = `Final Score: ${score} / ${totalQs} (${Math.round((score/totalQs)*100)}%)`;
+            document.getElementById('quizSubmitBtn').style.display = "none";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            showToast("📊 Quiz evaluation complete!");
         }
 
         function renderApp() {
