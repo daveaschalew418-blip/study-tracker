@@ -278,6 +278,8 @@
                 promptText = `Scan the uploaded documents for ${context} and extract every single important vocabulary term, concept, and law/theorem. Do not skip any crucial terms. Present them as a clear, easy-to-read glossary with the term bolded followed by its precise definition.`;
             } else if (type === 'video') {
                 promptText = `Act as an engaging, highly visual educational YouTuber like CrashCourse. Write a brief explanation script or a list of highly visual analogies to explain the hardest core concepts of ${context} to a high schooler. Make it memorable, fun, and easy to visualize.`;
+            } else if (type === 'questions') {
+                promptText = `Scan the uploaded textbook documents for ${context} and extract every single review question, practice problem, and end-of-chapter exercise. Present them as a clearly numbered list so I can practice answering them. Do not include the answers yet.`;
             }
 
             navigator.clipboard.writeText(promptText).then(() => {
@@ -319,7 +321,6 @@
                 `;
             } else {
                 const currentUnit = curriculumData[currentIndex];
-                // Escaping single quotes in titles to prevent JS errors in onclick
                 const safeTitle = currentUnit.title.replace(/'/g, "\\'");
                 
                 targetContainer.innerHTML = `
@@ -335,6 +336,7 @@
                         <button class="prompt-btn" onclick="copyPrompt('quiz', '${currentUnit.subject}', ${currentUnit.grade}, '${safeTitle}')"><span>❓</span> Quiz</button>
                         <button class="prompt-btn" onclick="copyPrompt('terms', '${currentUnit.subject}', ${currentUnit.grade}, '${safeTitle}')"><span>📖</span> Terms</button>
                         <button class="prompt-btn" onclick="copyPrompt('video', '${currentUnit.subject}', ${currentUnit.grade}, '${safeTitle}')"><span>🎬</span> Video</button>
+                        <button class="prompt-btn" onclick="copyPrompt('questions', '${currentUnit.subject}', ${currentUnit.grade}, '${safeTitle}')"><span>📋</span> Questions</button>
                     </div>
                 `;
             }
