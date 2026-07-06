@@ -43,26 +43,29 @@
             --input-bg: #0f172a;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); color: var(--text); padding: 12px; display: flex; justify-content: center; min-height: 100vh; }
-        .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 16px; padding-bottom: 80px; position: relative; }
+        body { background: var(--bg); color: var(--text); padding: 16px; display: flex; justify-content: center; min-height: 100vh; transition: background 0.3s, color 0.3s; }
         
-        /* Navigation Top Bar */
-        .brand-header { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; }
+        /* Responsive Unified App Container */
+        .app-container { width: 100%; max-width: 1200px; display: flex; flex-direction: column; gap: 20px; padding-bottom: 80px; position: relative; }
+        
+        /* Navigation Top Bar Header */
+        .brand-header { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
         .logo-group { display: flex; align-items: center; gap: 10px; }
         .logo-img { width: 38px; height: 38px; border-radius: 8px; }
-        .brand-name { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.5px; }
+        .brand-name { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; }
+        .header-controls { display: flex; align-items: center; gap: 12px; }
         .theme-toggle { background: var(--card); border: 1px solid var(--border); width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
         
         /* Premium Banner Widget */
-        .widget-banner { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #ffffff; padding: 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 12px; position: relative; overflow: hidden; }
-        .widget-banner::before { content: ''; position: absolute; top: -50px; right: -50px; width: 130px; height: 130px; background: rgba(37, 99, 235, 0.2); filter: blur(40px); border-radius: 50%; }
+        .widget-banner { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #ffffff; padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 12px; position: relative; overflow: hidden; }
+        .widget-banner::before { content: ''; position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: rgba(37, 99, 235, 0.2); filter: blur(40px); border-radius: 50%; }
         .widget-row { display: flex; justify-content: space-between; align-items: center; z-index: 1; }
         .widget-stat { display: flex; flex-direction: column; }
-        .widget-number { font-size: 1.6rem; font-weight: 800; color: #ffffff; line-height: 1.2; }
+        .widget-number { font-size: 1.8rem; font-weight: 800; color: #ffffff; line-height: 1.2; }
         .widget-label { font-size: 0.75rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
         
         /* Base Component Card UI */
-        .card { background: var(--card); padding: 18px; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
+        .card { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); height: height: max-content; }
         .target-card { border: 2.5px solid var(--primary); text-align: center; display: flex; flex-direction: column; align-items: center; }
         
         .badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; color: white; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -71,8 +74,8 @@
         .badge.Chemistry { background: var(--chem); }
         .badge.Biology { background: var(--bio); }
 
-        .unit-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 4px; line-height: 1.3; letter-spacing: -0.3px; }
-        .unit-grade { color: var(--text-muted); font-size: 0.9rem; font-weight: 600; margin-bottom: 16px; }
+        .unit-title { font-size: 1.35rem; font-weight: 800; margin-bottom: 4px; line-height: 1.3; letter-spacing: -0.3px; }
+        .unit-grade { color: var(--text-muted); font-size: 0.95rem; font-weight: 600; margin-bottom: 16px; }
         
         .action-btn { background: var(--success); color: white; border: none; padding: 14px 24px; border-radius: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; width: 100%; transition: transform 0.1s; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
         .action-btn:active { transform: scale(0.98); }
@@ -80,23 +83,27 @@
         /* NotebookLM Layout Grid */
         .prompt-grid { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; width: 100%; border-top: 1px dashed var(--border); padding-top: 16px; }
         .prompt-btn { flex: 1 1 30%; background: var(--bg); color: var(--text); border: 1px solid var(--border); padding: 10px 4px; border-radius: 10px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: background 0.2s; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .prompt-btn:active { background: var(--border); }
+        .prompt-btn:hover { background: var(--primary-light); border-color: var(--primary); }
         .prompt-btn span { font-size: 1.2rem; }
-        .prompt-title { width: 100%; font-size: 0.8rem; color: var(--text-muted); font-weight: 700; margin-top: 4px; text-align: left; }
+        .prompt-title { width: 100%; font-size: 0.85rem; color: var(--text-muted); font-weight: 700; margin-top: 4px; text-align: left; }
         
-        /* Lists */
+        /* Split Module Layouts for Wide Laptop Screen sizes */
+        .tracker-split-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        .lists-wrapper { display: flex; flex-direction: column; gap: 16px; }
+
+        /* Lists layout components */
         .list-section { display: flex; flex-direction: column; gap: 8px; }
-        .list-header { font-size: 1rem; font-weight: 700; color: var(--text-muted); padding-left: 4px; margin-top: 6px; display: flex; justify-content: space-between; align-items: center; }
+        .list-header { font-size: 1.05rem; font-weight: 700; color: var(--text-muted); padding-left: 4px; margin-top: 4px; display: flex; justify-content: space-between; align-items: center; }
         .count-tag { font-size: 0.8rem; background: var(--border); color: var(--text); padding: 2px 8px; border-radius: 12px; }
 
-        .scroll-container { max-height: 260px; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 8px; }
-        .scroll-container::-webkit-scrollbar { width: 4px; }
+        .scroll-container { max-height: 320px; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 8px; }
+        .scroll-container::-webkit-scrollbar { width: 6px; }
         .scroll-container::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-        .unit-item { background: var(--card); border: 1px solid var(--border); padding: 12px 14px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; }
+        .unit-item { background: var(--card); border: 1px solid var(--border); padding: 14px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; }
         .unit-item.done { opacity: 0.55; background: rgba(16, 185, 129, 0.03); }
-        .unit-item h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; line-height: 1.2; }
-        .unit-item p { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+        .unit-item h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 2px; line-height: 1.2; }
+        .unit-item p { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
         .check-icon { color: var(--success); font-weight: bold; font-size: 1.1rem; }
         
         .progress-bar-container { width: 100%; background: rgba(255,255,255,0.1); height: 8px; border-radius: 4px; overflow: hidden; margin-top: 4px; }
@@ -105,20 +112,36 @@
         /* Universal Tab Controls */
         .app-tab { display: none; flex-direction: column; gap: 16px; }
         .app-tab.active { display: flex; }
+        
+        /* Modernized Side by Side Split Workspaces for Notes/Quiz inside Big Windows */
+        .workspace-layout { display: grid; grid-template-columns: 1fr; gap: 20px; }
 
         /* Configuration Key Management View Header */
-        .key-wrapper { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
-        .key-input { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); font-size: 0.85rem; }
+        .key-wrapper { display: flex; gap: 8px; margin-bottom: 12px; align-items: center; }
+        .key-input { flex: 1; padding: 11px; border-radius: 10px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); font-size: 0.85rem; }
 
         /* Text Input controls */
-        .textarea-input { width: 100%; height: 140px; padding: 12px; border-radius: 14px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); font-size: 0.9rem; resize: none; outline: none; margin-bottom: 12px; }
+        .textarea-input { width: 100%; height: 200px; padding: 14px; border-radius: 14px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); font-size: 0.9rem; resize: vertical; outline: none; margin-bottom: 12px; }
         .textarea-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
-        .primary-btn { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; width: 100%; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2); display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .primary-btn { background: var(--primary); color: white; border: none; padding: 14px 20px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; width: 100%; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2); display: flex; justify-content: center; align-items: center; gap: 8px; }
         .primary-btn:disabled { opacity: 0.6; cursor: not-allowed; }
         
-        /* Sandboxed AI Code Viewport Mounts */
-        .sandbox-mount-frame { border-radius: 16px; border: 1px solid var(--border); background: var(--card); overflow: hidden; margin-top: 16px; width: 100%; display: none; min-height: 450px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
-        .sandbox-iframe { width: 100%; height: 550px; border: none; background: transparent; display: block; }
+        /* Sandboxed AI Code Viewport Mounts & Fullscreen Elements Configuration */
+        .sandbox-mount-frame { border-radius: 16px; border: 1px solid var(--border); background: var(--card); overflow: hidden; display: none; min-height: 500px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); position: relative; flex-direction: column; }
+        .sandbox-header-bar { background: var(--bg); padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .sandbox-title-text { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .fullscreen-btn { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        .fullscreen-btn:hover { background: var(--primary-light); color: var(--primary); }
+        .sandbox-iframe { width: 100%; height: 550px; border: none; background: transparent; display: block; flex: 1; }
+
+        /* Fullscreen Request API fallback styling */
+        .sandbox-mount-frame.is-fullscreen { position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; z-index: 99999 !important; border-radius: 0 !important; margin-top: 0 !important; }
+        .sandbox-mount-frame.is-fullscreen .sandbox-iframe { height: calc(100vh - 45px) !important; background: #ffffff !important; }
+
+        /* Desktop Top Navbar layout overrides */
+        .desktop-navbar { display: none; gap: 8px; }
+        .desktop-nav-item { background: var(--card); border: 1px solid var(--border); padding: 8px 16px; border-radius: 10px; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        .desktop-nav-item.active { background: var(--primary); border-color: var(--primary); color: white; }
 
         /* Mobile Bottom App Bar Navigation Layout */
         .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 64px; background: var(--card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 999; box-shadow: 0 -4px 10px rgba(0,0,0,0.03); }
@@ -127,10 +150,21 @@
         .nav-item.active { color: var(--primary); }
 
         /* Toast Popup Alerts */
-        #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 10px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 80px; transform: translateX(-50%); font-size: 0.9rem; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 10px; padding: 16px; position: fixed; z-index: 100000; left: 50%; bottom: 80px; transform: translateX(-50%); font-size: 0.9rem; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 80px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 80px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+        /* Media Queries handling Advanced Adaptive Grid Screen Reflows (Laptops/Desktops) */
+        @media(min-width: 768px) {
+            body { padding: 24px; }
+            .bottom-nav { display: none; }
+            .desktop-navbar { display: flex; }
+            .tracker-split-grid { grid-template-columns: 1fr 1fr; align-items: start; }
+            .workspace-layout { grid-template-columns: 420px 1fr; align-items: start; }
+            .textarea-input { height: 280px; }
+            .sandbox-iframe { height: 620px; }
+        }
     </style>
 </head>
 <body>
@@ -139,25 +173,32 @@
         <div class="brand-header">
             <div class="logo-group">
                 <img src="https://cdn-icons-png.flaticon.com/512/3135/3135810.png" class="logo-img" alt="logo">
-                <span class="brand-name">StudySync</span>
+                <span class="brand-name">StudySync Workspace</span>
             </div>
-            <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()">🌙</button>
+            <div class="header-controls">
+                <div class="desktop-navbar">
+                    <div class="desktop-nav-item active" id="desk-nav-tracker" onclick="switchActiveTab('tracker')">🏠 Tracker</div>
+                    <div class="desktop-nav-item" id="desk-nav-notes" onclick="switchActiveTab('notes')">📝 Note Canvas</div>
+                    <div class="desktop-nav-item" id="desk-nav-quiz" onclick="switchActiveTab('quiz')">❓ Quiz Engine</div>
+                </div>
+                <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()">🌙</button>
+            </div>
         </div>
 
         <div class="widget-banner">
             <div class="widget-row">
                 <div class="widget-stat">
                     <span class="widget-number" id="widgetDays">57</span>
-                    <span class="widget-label">Days Left</span>
+                    <span class="widget-label">Days Remaining</span>
                 </div>
                 <div class="widget-stat" style="text-align: right;">
                     <span class="widget-number" id="widgetCompleted">0/57</span>
-                    <span class="widget-label">Completed</span>
+                    <span class="widget-label">Modules Logged</span>
                 </div>
             </div>
             <div>
                 <div class="widget-row" style="margin-bottom: 2px;">
-                    <span class="widget-label" style="color: #ffffff; font-size: 0.7rem;">Course Completion Progress</span>
+                    <span class="widget-label" style="color: #ffffff; font-size: 0.7rem;">Syllabus Completion Index</span>
                     <span class="widget-label" id="widgetPercent" style="color: var(--success);">0%</span>
                 </div>
                 <div class="progress-bar-container">
@@ -167,56 +208,72 @@
         </div>
 
         <div id="tab-tracker" class="app-tab active">
-            <div class="card target-card" id="todayTarget"></div>
+            <div class="tracker-split-grid">
+                <div class="card target-card" id="todayTarget"></div>
 
-            <div class="list-section">
-                <h3 class="list-header">Upcoming Plan <span class="count-tag" id="upcomingCount">0</span></h3>
-                <div class="scroll-container" id="upcomingList"></div>
-            </div>
+                <div class="lists-wrapper">
+                    <div class="list-section">
+                        <h3 class="list-header">Syllabus Up Next <span class="count-tag" id="upcomingCount">0</span></h3>
+                        <div class="scroll-container" id="upcomingList"></div>
+                    </div>
 
-            <div class="list-section">
-                <h3 class="list-header">Completed Lessons <span class="count-tag" id="completedCount" style="background-color:rgba(16,185,129,0.15); color:var(--success);">0</span></h3>
-                <div class="scroll-container" id="completedList"></div>
+                    <div class="list-section">
+                        <h3 class="list-header">Completed Items <span class="count-tag" id="completedCount" style="background-color:rgba(16,185,129,0.15); color:var(--success);">0</span></h3>
+                        <div class="scroll-container" id="completedList"></div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div id="tab-notes" class="app-tab">
-            <div class="card">
-                <h3 style="margin-bottom: 4px; font-weight: 800;">📝 Intelligent Note AI Renderer</h3>
-                <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Transforms notes, text blocks, and structured text tables into beautifully stylized responsive components via Gemini API.</p>
-                
-                <div class="key-wrapper">
-                    <input type="password" class="key-input" id="noteApiKey" placeholder="Paste Gemini API Key here..." onchange="saveApiKeys(this.value)">
-                </div>
+            <div class="workspace-layout">
+                <div class="card">
+                    <h3 style="margin-bottom: 4px; font-weight: 800;">📝 Note AI Render Engine</h3>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Transforms notes, messy text blocks, and curriculum layout tables into styled responsive HTML assets via Gemini.</p>
+                    
+                    <div class="key-wrapper">
+                        <input type="password" class="key-input" id="noteApiKey" placeholder="Paste Gemini API Key..." onchange="saveApiKeys(this.value)">
+                    </div>
 
-                <textarea class="textarea-input" id="noteRawInput" placeholder="Paste your plain textbook note text, tables, or unstructured Markdown straight from NotebookLM here..."></textarea>
-                <button class="primary-btn" id="noteGenBtn" onclick="requestAiRender('note')">✨ AI Premium Render Layout</button>
+                    <textarea class="textarea-input" id="noteRawInput" placeholder="Paste textbook text details, notes, data comparison maps, or text tables from NotebookLM here..."></textarea>
+                    <button class="primary-btn" id="noteGenBtn" onclick="requestAiRender('note')">✨ Run AI Designer Layout</button>
+                </div>
                 
                 <div class="sandbox-mount-frame" id="noteSandboxFrame">
+                    <div class="sandbox-header-bar">
+                        <span class="sandbox-title-text">✨ Live Render Viewport</span>
+                        <button class="fullscreen-btn" onclick="toggleFullscreenContainer('noteSandboxFrame')">🖥️ Toggle Fullscreen Mode</button>
+                    </div>
                     <iframe class="sandbox-iframe" id="noteIframe"></iframe>
                 </div>
             </div>
         </div>
 
         <div id="tab-quiz" class="app-tab">
-            <div class="card">
-                <h3 style="margin-bottom: 4px; font-weight: 800;">📋 AI Live Interactive Quiz Engine</h3>
-                <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Paste any text question structures + answers from NotebookLM. Gemini turns it into an interactive app component with live tracking checks.</p>
-                
-                <div class="key-wrapper">
-                    <input type="password" class="key-input" id="quizApiKey" placeholder="Paste Gemini API Key here..." onchange="saveApiKeys(this.value)">
-                </div>
+            <div class="workspace-layout">
+                <div class="card">
+                    <h3 style="margin-bottom: 4px; font-weight: 800;">📋 AI Interactive Quiz Generator</h3>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Paste raw unorganized multiple choice prints + keys together. Gemini will design an interactive local application module.</p>
+                    
+                    <div class="key-wrapper">
+                        <input type="password" class="key-input" id="quizApiKey" placeholder="Paste Gemini API Key..." onchange="saveApiKeys(this.value)">
+                    </div>
 
-                <textarea class="textarea-input" id="quizRawInput" placeholder="Paste your multiple choice questions list plus its raw Answer Key block together here..."></textarea>
-                <button class="primary-btn" id="quizGenBtn" style="background: var(--success);" onclick="requestAiRender('quiz')">🚀 AI Build Interactive Test</button>
+                    <textarea class="textarea-input" id="quizRawInput" placeholder="Paste raw textbook multiple choice question prints along with its Answer Key text strings together here..."></textarea>
+                    <button class="primary-btn" id="quizGenBtn" style="background: var(--success);" onclick="requestAiRender('quiz')">🚀 Build Active UI Quiz</button>
+                </div>
                 
                 <div class="sandbox-mount-frame" id="quizSandboxFrame">
+                    <div class="sandbox-header-bar">
+                        <span class="sandbox-title-text">📋 Live Test Terminal</span>
+                        <button class="fullscreen-btn" onclick="toggleFullscreenContainer('quizSandboxFrame')">🖥️ Toggle Fullscreen Mode</button>
+                    </div>
                     <iframe class="sandbox-iframe" id="quizIframe"></iframe>
                 </div>
             </div>
         </div>
 
-        <div id="toast">Prompt copied to clipboard!</div>
+        <div id="toast">Prompt string duplicated to dashboard clipboard clipboard!</div>
 
         <nav class="bottom-nav">
             <div class="nav-item active" id="btn-nav-tracker" onclick="switchActiveTab('tracker')">
@@ -323,7 +380,7 @@
 
         let currentIndex = parseInt(localStorage.getItem('studysync_index_finalv2')) || 0;
 
-        // Initialize saved API Key parameters
+        // Initialize saved API Key parameters across views
         const savedKey = localStorage.getItem('studysync_gemini_key') || '';
         document.getElementById('noteApiKey').value = savedKey;
         document.getElementById('quizApiKey').value = savedKey;
@@ -334,7 +391,7 @@
             document.getElementById('quizApiKey').value = val.trim();
         }
 
-        // Theme management
+        // Theme management operations
         if (localStorage.getItem('studysync_theme') === 'dark') {
             document.body.classList.add('dark');
             document.getElementById('themeToggleBtn').innerText = "☀️";
@@ -351,12 +408,20 @@
             }
         }
 
+        // Unified layout switcher for responsive UI sync controls
         function switchActiveTab(tabName) {
             document.querySelectorAll('.app-tab').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.desktop-nav-item').forEach(el => el.classList.remove('active'));
             
             document.getElementById(`tab-${tabName}`).classList.add('active');
-            document.getElementById(`btn-nav-${tabName}`).classList.add('active');
+            
+            const mobileBtn = document.getElementById(`btn-nav-${tabName}`);
+            if(mobileBtn) mobileBtn.classList.add('active');
+            
+            const deskBtn = document.getElementById(`desk-nav-${tabName}`);
+            if(deskBtn) deskBtn.classList.add('active');
+            
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -368,7 +433,7 @@
             }
         }
 
-        // Automated System Prompts configuration
+        // Automated Layout copy system configurations
         window.copyPrompt = function(type, subject, grade, title) {
             let promptText = "";
             const context = `Grade ${grade} ${subject} - ${title}`;
@@ -399,6 +464,33 @@
             setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
         }
 
+        // Dynamic Native Fullscreen Canvas Mode Controller Fallback
+        function toggleFullscreenContainer(frameId) {
+            const element = document.getElementById(frameId);
+            if (!element) return;
+
+            // Use browser requestFullscreen API if authorized natively
+            if (element.requestFullscreen) {
+                if (!document.fullscreenElement) {
+                    element.requestFullscreen().catch(err => {
+                        element.classList.toggle('is-fullscreen');
+                    });
+                } else {
+                    document.exitFullscreen();
+                }
+            } else {
+                // Class-based styling fallback route for sandboxed containers
+                element.classList.toggle('is-fullscreen');
+            }
+        }
+
+        // Sync local adjustments on native fullscreen exits
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                document.querySelectorAll('.sandbox-mount-frame').forEach(el => el.classList.remove('is-fullscreen'));
+            }
+        });
+
         // ================= GEMINI API SANDBOX COMPONENT GENERATOR ENGINE =================
         async function requestAiRender(mode) {
             const apiKey = localStorage.getItem('studysync_gemini_key');
@@ -418,24 +510,22 @@
             const frameWrapper = document.getElementById(mode === 'note' ? 'noteSandboxFrame' : 'quizSandboxFrame');
 
             button.disabled = true;
-            button.innerText = "⏳ Generating UI Components...";
+            button.innerText = "⏳ Building Viewports...";
 
-            // Configure custom engineering rules depending on tab context
             let systemInstruction = "";
             if (mode === 'note') {
-                systemInstruction = "You are a professional web designer. Take this plain study notes or table text input and format it into a gorgeous, highly readable, clean note. Wrap everything inside a single standalone complete index.html block. Use advanced CSS layouts, clean modern tables with borders/padding, highlights, custom cards for bullet lists, professional readable fonts, and spacing. Do NOT omit or subtract any text content information, just beautify it. Respond ONLY with the valid HTML code block without markdown wrappers.";
+                systemInstruction = "You are an expert full-stack web designer. Take this plain study note or structural layout table text input and format it into a gorgeous, highly readable note layout page. Wrap everything inside a single standalone index.html source script. Use clean CSS designs, modern responsive layout components, beautiful data tables featuring crisp padding/borders, highlighters, elegant custom list elements, professional typography, and broad responsive line spacing. Do NOT compress or skip text contents information, just format beautifully. Respond ONLY with the valid runnable HTML code block without backticks markdown wraps.";
             } else {
-                systemInstruction = "You are an interaction developer. Take this quiz raw text and answer key input and build a live interactive multiple choice testing app component. Wrap everything inside a single standalone complete index.html block containing HTML, embedded CSS styles, and JavaScript logic. The code must let the user click on option items, save their selections, click a 'Verify Answers' button, check selections against the provided key, and immediately render vivid success (green) or error (red) visual highlights on the choices. Respond ONLY with valid, self-contained runnable HTML source code without any triple-backtick markdown blocks.";
+                systemInstruction = "You are a professional software engineering instructor. Take this quiz raw text and answer key input string array and compile an interactive web app component. Wrap everything inside a single self-contained complete index.html block containing standard semantic tags, custom modern embedded CSS styles, and robust dynamic JavaScript selection logic. The client logic must allow clicking selection list nodes, retaining choices, updating states on a 'Verify Answers' layout controller, evaluating answers against the key instantly, and mapping success (green) or danger (red) contextual backgrounds on selected nodes cleanly. Respond ONLY with valid, standalone executable HTML source code without any triple-backtick markdown blocks.";
             }
 
             try {
-                // Fetch to Gemini API model endpoint directly
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         contents: [{
-                            parts: [{ text: systemInstruction + "\n\nInput Content:\n" + rawText }]
+                            parts: [{ text: systemInstruction + "\n\nInput Text:\n" + rawText }]
                         }]
                     })
                 });
@@ -443,24 +533,22 @@
                 const data = await response.json();
                 let generatedHtml = data.candidates[0].content.parts[0].text.trim();
 
-                // Clean up any extra triple backtick wraps if the model returned them
                 if (generatedHtml.startsWith("```html")) {
                     generatedHtml = generatedHtml.substring(7, generatedHtml.lastIndexOf("```"));
                 } else if (generatedHtml.startsWith("```")) {
                     generatedHtml = generatedHtml.substring(3, generatedHtml.lastIndexOf("```"));
                 }
 
-                // Mount the returned HTML programmatically to the sandboxed iframe canvas securely
                 iframe.srcdoc = generatedHtml;
-                frameWrapper.style.display = "block";
-                showToast("✨ Premium component constructed successfully!");
+                frameWrapper.style.display = "flex";
+                showToast("✨ Premium interface built successfully!");
 
             } catch (err) {
                 console.error(err);
-                alert("Gemini API Engine failed. Please verify your connection or Key authorizations.");
+                alert("Gemini API Engine failure. Check console outputs or API configuration tokens.");
             } finally {
                 button.disabled = false;
-                button.innerText = mode === 'note' ? "✨ AI Premium Render Layout" : "🚀 AI Build Interactive Test";
+                button.innerText = mode === 'note' ? "✨ Run AI Designer Layout" : "🚀 Build Active UI Quiz";
             }
         }
 
@@ -497,7 +585,7 @@
                     <p class="unit-grade">Grade ${currentUnit.grade}</p>
                     <button class="action-btn" onclick="markComplete()">🎯 Mark Lesson Done</button>
                     
-                    <div class="prompt-title">NotebookLM Setup Prompts:</div>
+                    <div class="prompt-title">NotebookLM Configuration Setup Prompts:</div>
                     <div class="prompt-grid">
                         <button class="prompt-btn" onclick="copyPrompt('note', '${currentUnit.subject}', ${currentUnit.grade}, '${safeTitle}')"><span>📝</span> Notes</button>
                         <button class="prompt-btn" onclick="copyPrompt('flashcard', '${currentUnit.subject}', ${currentUnit.grade}, '${safeTitle}')"><span>🃏</span> Flashcards</button>
