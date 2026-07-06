@@ -106,35 +106,19 @@
         .app-tab { display: none; flex-direction: column; gap: 16px; }
         .app-tab.active { display: flex; }
 
+        /* Configuration Key Management View Header */
+        .key-wrapper { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+        .key-input { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); font-size: 0.85rem; }
+
         /* Text Input controls */
         .textarea-input { width: 100%; height: 140px; padding: 12px; border-radius: 14px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); font-size: 0.9rem; resize: none; outline: none; margin-bottom: 12px; }
         .textarea-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
-        .primary-btn { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; width: 100%; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2); }
+        .primary-btn { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; width: 100%; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2); display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .primary-btn:disabled { opacity: 0.6; cursor: not-allowed; }
         
-        /* Note Beautifier Render Engine Layout Design Rules */
-        .formatted-note-view { border-radius: 16px; border: 1px solid var(--border); background: var(--card); padding: 16px; margin-top: 16px; display: flex; flex-direction: column; gap: 14px; }
-        .note-h1 { color: var(--primary); font-size: 1.5rem; font-weight: 800; border-bottom: 2.5px solid var(--primary); padding-bottom: 6px; margin-top: 8px; text-transform: uppercase; letter-spacing: -0.3px; }
-        .note-h2 { color: var(--text); font-size: 1.2rem; font-weight: 800; margin-top: 12px; display: flex; align-items: center; gap: 6px; }
-        .note-h2::before { content: "🔹"; font-size: 1rem; }
-        .note-h3 { color: var(--text-muted); font-size: 1rem; font-weight: 700; text-decoration: underline; margin-top: 4px; }
-        .note-bold-highlight { background: var(--primary-light); color: var(--primary); font-weight: 700; padding: 2px 6px; border-radius: 6px; display: inline; border-bottom: 1px solid rgba(37, 99, 235, 0.2); }
-        body.dark .note-bold-highlight { color: #93c5fd; }
-        .note-bullet-card { list-style: none; background: var(--bg); padding: 12px 14px; border-radius: 10px; border-left: 4px solid var(--primary); font-size: 0.9rem; font-weight: 500; line-height: 1.5; box-shadow: 0 1px 3px rgba(0,0,0,0.01); }
-        .note-paragraph { font-size: 0.95rem; line-height: 1.6; color: var(--text); font-weight: 400; margin-bottom: 4px; }
-
-        /* Interactive Dynamic Quiz Interface Engine */
-        .quiz-container { display: flex; flex-direction: column; gap: 16px; margin-top: 12px; }
-        .quiz-q-card { background: var(--bg); border: 1px solid var(--border); padding: 16px; border-radius: 16px; display: flex; flex-direction: column; gap: 12px; }
-        .quiz-q-title { font-size: 0.95rem; font-weight: 800; color: var(--text); line-height: 1.4; }
-        .quiz-options-list { display: flex; flex-direction: column; gap: 8px; }
-        .quiz-option-item { background: var(--card); border: 1px solid var(--border); padding: 12px 14px; border-radius: 12px; font-size: 0.85rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s; box-shadow: 0 1px 2px rgba(0,0,0,0.01); }
-        .quiz-option-item:hover { border-color: var(--primary); }
-        .quiz-option-item.selected { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
-        
-        /* Quiz Verification Feedback States */
-        .quiz-option-item.correct-fill { background: rgba(16, 185, 129, 0.15) !important; border-color: var(--success) !important; color: var(--success); }
-        .quiz-option-item.wrong-fill { background: rgba(239, 68, 68, 0.12) !important; border-color: var(--danger) !important; color: var(--danger); }
-        .quiz-score-banner { text-align: center; font-size: 1.2rem; font-weight: 800; color: var(--success); background: rgba(16, 185, 129, 0.1); padding: 12px; border-radius: 12px; border: 1px dashed var(--success); margin-bottom: 8px; }
+        /* Sandboxed AI Code Viewport Mounts */
+        .sandbox-mount-frame { border-radius: 16px; border: 1px solid var(--border); background: var(--card); overflow: hidden; margin-top: 16px; width: 100%; display: none; min-height: 450px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .sandbox-iframe { width: 100%; height: 550px; border: none; background: transparent; display: block; }
 
         /* Mobile Bottom App Bar Navigation Layout */
         .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 64px; background: var(--card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 999; box-shadow: 0 -4px 10px rgba(0,0,0,0.03); }
@@ -198,24 +182,36 @@
 
         <div id="tab-notes" class="app-tab">
             <div class="card">
-                <h3 style="margin-bottom: 10px; font-weight: 800;">📝 Note Beautifier Engine</h3>
-                <textarea class="textarea-input" id="noteRawInput" placeholder="Paste your plain text or Markdown study notes straight from NotebookLM here..."></textarea>
-                <button class="primary-btn" onclick="processBeautifyNote()">✨ Render Premium Layout</button>
+                <h3 style="margin-bottom: 4px; font-weight: 800;">📝 Intelligent Note AI Renderer</h3>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Transforms notes, text blocks, and structured text tables into beautifully stylized responsive components via Gemini API.</p>
                 
-                <div class="formatted-note-view" id="noteOutputView" style="display: none;"></div>
+                <div class="key-wrapper">
+                    <input type="password" class="key-input" id="noteApiKey" placeholder="Paste Gemini API Key here..." onchange="saveApiKeys(this.value)">
+                </div>
+
+                <textarea class="textarea-input" id="noteRawInput" placeholder="Paste your plain textbook note text, tables, or unstructured Markdown straight from NotebookLM here..."></textarea>
+                <button class="primary-btn" id="noteGenBtn" onclick="requestAiRender('note')">✨ AI Premium Render Layout</button>
+                
+                <div class="sandbox-mount-frame" id="noteSandboxFrame">
+                    <iframe class="sandbox-iframe" id="noteIframe"></iframe>
+                </div>
             </div>
         </div>
 
         <div id="tab-quiz" class="app-tab">
             <div class="card">
-                <h3 style="margin-bottom: 10px; font-weight: 800;">📋 Live Interactive Quiz</h3>
-                <textarea class="textarea-input" id="quizRawInput" placeholder="Paste the multiple-choice questions block and Answer Key from NotebookLM here..."></textarea>
-                <button class="primary-btn" style="background: var(--success);" onclick="generateInteractiveQuiz()">🚀 Build Interactive Test</button>
+                <h3 style="margin-bottom: 4px; font-weight: 800;">📋 AI Live Interactive Quiz Engine</h3>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Paste any text question structures + answers from NotebookLM. Gemini turns it into an interactive app component with live tracking checks.</p>
                 
-                <div id="quizAppBody" style="margin-top: 16px; display: none;">
-                    <div class="quiz-score-banner" id="quizScoreDisplay"></div>
-                    <div class="quiz-container" id="quizRenderContainer"></div>
-                    <button class="primary-btn" id="quizSubmitBtn" style="margin-top: 16px; background: var(--primary);" onclick="evaluateQuizAnswers()">Verify My Answers</button>
+                <div class="key-wrapper">
+                    <input type="password" class="key-input" id="quizApiKey" placeholder="Paste Gemini API Key here..." onchange="saveApiKeys(this.value)">
+                </div>
+
+                <textarea class="textarea-input" id="quizRawInput" placeholder="Paste your multiple choice questions list plus its raw Answer Key block together here..."></textarea>
+                <button class="primary-btn" id="quizGenBtn" style="background: var(--success);" onclick="requestAiRender('quiz')">🚀 AI Build Interactive Test</button>
+                
+                <div class="sandbox-mount-frame" id="quizSandboxFrame">
+                    <iframe class="sandbox-iframe" id="quizIframe"></iframe>
                 </div>
             </div>
         </div>
@@ -326,8 +322,17 @@
         ];
 
         let currentIndex = parseInt(localStorage.getItem('studysync_index_finalv2')) || 0;
-        let runningQuizData = { questions: [], key: {} };
-        let selectedUserAnswers = {};
+
+        // Initialize saved API Key parameters
+        const savedKey = localStorage.getItem('studysync_gemini_key') || '';
+        document.getElementById('noteApiKey').value = savedKey;
+        document.getElementById('quizApiKey').value = savedKey;
+
+        function saveApiKeys(val) {
+            localStorage.setItem('studysync_gemini_key', val.trim());
+            document.getElementById('noteApiKey').value = val.trim();
+            document.getElementById('quizApiKey').value = val.trim();
+        }
 
         // Theme management
         if (localStorage.getItem('studysync_theme') === 'dark') {
@@ -346,7 +351,6 @@
             }
         }
 
-        // Navigation Switcher Engine
         function switchActiveTab(tabName) {
             document.querySelectorAll('.app-tab').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -364,23 +368,23 @@
             }
         }
 
-        // Automated Prompts Creator Engine
+        // Automated System Prompts configuration
         window.copyPrompt = function(type, subject, grade, title) {
             let promptText = "";
             const context = `Grade ${grade} ${subject} - ${title}`;
 
             if (type === 'note') {
-                promptText = `Act as an expert high school tutor. Please provide a comprehensive, highly structured set of study notes based on the uploaded documents for: ${context}. Include definitions for core concepts, bullet points for key theories, and practical examples to make it easy to understand. Use standard Markdown formats (# for primary topic headers, ## for headers, and bold keywords).`;
+                promptText = `Act as an expert high school tutor. Please provide a comprehensive, highly structured set of study notes based on the uploaded documents for: ${context}. Include definitions for core concepts, bullet points for key theories, data tables comparing metrics if available, and practical examples to make it easy to understand.`;
             } else if (type === 'flashcard') {
                 promptText = `Based on the uploaded documents for ${context}, generate a complete set of flashcards. Cover every important concept, formula, and vocabulary word. Format exactly like this for easy copying:\n\nFront: [Question/Term]\nBack: [Answer/Definition]`;
             } else if (type === 'quiz') {
-                promptText = `Act as a strict but fair teacher. Create a 10-question multiple-choice quiz covering all the crucial material from the uploaded documents for ${context}. Provide 4 options (A, B, C, D) for each. At the very bottom, provide an Answer Key matching exactly this layout format (1. A, 2. B, 3. C) with a brief explanation of why the correct answer is right.`;
+                promptText = `Act as a teacher. Create a 10-question multiple-choice quiz covering all the crucial material from the uploaded documents for ${context}. Provide 4 options (A, B, C, D) for each. At the very bottom, provide an Answer Key matching exactly this layout format (1. A, 2. B, 3. C) with a brief explanation.`;
             } else if (type === 'terms') {
                 promptText = `Scan the uploaded documents for ${context} and extract every single important vocabulary term, concept, and law/theorem. Do not skip any crucial terms. Present them as a clear, easy-to-read glossary with the term bolded followed by its precise definition.`;
             } else if (type === 'video') {
                 promptText = `Act as an engaging, highly visual educational YouTuber like CrashCourse. Write a brief explanation script or a list of highly visual analogies to explain the hardest core concepts of ${context} to a high schooler. Make it memorable, fun, and easy to visualize.`;
             } else if (type === 'questions') {
-                promptText = `Scan the uploaded textbook documents for ${context} and extract or generate multiple choice review questions. You MUST layout your response matching this strict syntax pattern exactly so my app parser reads it cleanly:\n\n1. Question text here\nA) Option text\nB) Option text\nC) Option text\nD) Option text\n\n2. Next question text here...\n\nAt the very end of the text, write exactly:\nAnswer Key:\n1. A\n2. B`;
+                promptText = `Scan the uploaded textbook documents for ${context} and extract or generate multiple choice review questions. List them with standard options A, B, C, D. At the end of the text, write an Answer Key matching the questions.`;
             }
 
             navigator.clipboard.writeText(promptText).then(() => {
@@ -395,178 +399,69 @@
             setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
         }
 
-        // UPGRADED FEATURE 1: Advanced Markdown To Styled Component Elements Renderer
-        function processBeautifyNote() {
-            const rawText = document.getElementById('noteRawInput').value.trim();
-            const view = document.getElementById('noteOutputView');
-            if(!rawText) return;
-
-            const lines = rawText.split('\n');
-            let outputHtml = "";
-
-            lines.forEach(line => {
-                let currentLine = line.trim();
-                if(!currentLine) return;
-
-                // 1. Process Markdown Headers
-                if(currentLine.startsWith('# ')) {
-                    outputHtml += `<div class="note-h1">${currentLine.replace('# ', '')}</div>`;
-                } else if(currentLine.startsWith('## ')) {
-                    outputHtml += `<div class="note-h2">${currentLine.replace('## ', '')}</div>`;
-                } else if(currentLine.startsWith('### ')) {
-                    outputHtml += `<div class="note-h3">${currentLine.replace('### ', '')}</div>`;
-                } 
-                // 2. Process Bullet Cards
-                else if(currentLine.startsWith('- ') || currentLine.startsWith('* ')) {
-                    let cleanedBullet = currentLine.substring(2);
-                    // Inline Bold Highlighter inside components
-                    cleanedBullet = cleanedBullet.replace(/\*\*(.*?)\*\*/g, '<span class="note-bold-highlight">$1</span>');
-                    outputHtml += `<li class="note-bullet-card">${cleanedBullet}</li>`;
-                } 
-                // 3. Normal Paragraph Cards
-                else {
-                    let processedParam = currentLine.replace(/\*\*(.*?)\*\*/g, '<span class="note-bold-highlight">$1</span>');
-                    outputHtml += `<p class="note-paragraph">${processedParam}</p>`;
-                }
-            });
-
-            view.innerHTML = outputHtml;
-            view.style.display = "flex";
-            showToast("✨ Notes elegantly rendered with CSS elements!");
-        }
-
-        // UPGRADED FEATURE 2: High-Performance Quiz Parser Engine with Regex Matching
-        function generateInteractiveQuiz() {
-            const rawText = document.getElementById('quizRawInput').value;
-            const container = document.getElementById('quizRenderContainer');
-            const body = document.getElementById('quizAppBody');
-            
-            if(!rawText.trim()) return;
-
-            const lowerText = rawText.toLowerCase();
-            let boundaryIndex = lowerText.lastIndexOf("answer key");
-            if (boundaryIndex === -1) boundaryIndex = lowerText.lastIndexOf("answers:");
-            
-            let questionsTextSection = rawText;
-            let answerKeyTextSection = "";
-            
-            if (boundaryIndex !== -1) {
-                questionsTextSection = rawText.substring(0, boundaryIndex);
-                answerKeyTextSection = rawText.substring(boundaryIndex);
-            }
-
-            const lines = questionsTextSection.split('\n');
-            let arrayList = [];
-            let currentQ = null;
-
-            lines.forEach(line => {
-                let trimmed = line.trim();
-                if(!trimmed) return;
-
-                // High-tolerance regular expression matches "1.", "**1.**", "1)" etc.
-                let qMatch = trimmed.match(/^[\*\s]*(\d+)\s*[\.\)]\s*[\*\s]*(.*)/i);
-                if (qMatch) {
-                    if (currentQ) arrayList.push(currentQ);
-                    currentQ = { id: qMatch[1], text: qMatch[2].replace(/\*\*/g, ''), options: [] };
-                    return;
-                }
-
-                // High-tolerance matching for options "A.", "**A)**", "* A)" etc.
-                let oMatch = trimmed.match(/^[\*\s]*([A-D])\s*[\.\)]\s*[\*\s]*(.*)/i);
-                if (oMatch && currentQ) {
-                    currentQ.options.push({ letter: oMatch[1].toUpperCase(), text: oMatch[2].replace(/\*\*/g, '') });
-                    return;
-                }
-
-                if (currentQ && !oMatch && !qMatch) {
-                    currentQ.text += " " + trimmed.replace(/\*\*/g, '');
-                }
-            });
-            if (currentQ) arrayList.push(currentQ);
-
-            // Extract values for dynamic Answer maps cleanly
-            let structuralMap = {};
-            let matches = answerKeyTextSection.match(/(\d+)\s*[\.\):\s-]+\s*([A-D])/gi);
-            if(matches) {
-                matches.forEach(item => {
-                    let dynamicMatch = item.match(/(\d+)\s*[\.\):\s-]+\s*([A-D])/i);
-                    if(dynamicMatch) structuralMap[dynamicMatch[1]] = dynamicMatch[2].toUpperCase();
-                });
-            }
-
-            runningQuizData.questions = arrayList;
-            runningQuizData.key = structuralMap;
-            selectedUserAnswers = {};
-
-            container.innerHTML = "";
-            document.getElementById('quizScoreDisplay').style.display = "none";
-            document.getElementById('quizSubmitBtn').style.display = "block";
-
-            if(arrayList.length === 0) {
-                container.innerHTML = "<p style='color:var(--danger); font-size:0.9rem; font-weight:700; text-align:center;'>Could not automatically extract questions structure.<br><br>Please verify formatting or check that options start cleanly with letters A, B, C, or D.</p>";
-                body.style.display = "block";
+        // ================= GEMINI API SANDBOX COMPONENT GENERATOR ENGINE =================
+        async function requestAiRender(mode) {
+            const apiKey = localStorage.getItem('studysync_gemini_key');
+            if(!apiKey) {
+                alert("Please paste your Gemini API Key first!");
                 return;
             }
 
-            arrayList.forEach(q => {
-                let qCard = document.createElement('div');
-                qCard.className = "quiz-q-card";
-                qCard.innerHTML = `<div class="quiz-q-title">${q.id}. ${q.text}</div>`;
-                
-                let optList = document.createElement('div');
-                optList.className = "quiz-options-list";
+            const rawText = document.getElementById(mode === 'note' ? 'noteRawInput' : 'quizRawInput').value.trim();
+            if(!rawText) {
+                alert("Please paste the plain text payload from NotebookLM first!");
+                return;
+            }
 
-                q.options.forEach(opt => {
-                    let optItem = document.createElement('div');
-                    optItem.className = "quiz-option-item";
-                    optItem.id = `opt-item-${q.id}-${opt.letter}`;
-                    optItem.innerText = `${opt.letter}) ${opt.text}`;
-                    
-                    optItem.onclick = () => {
-                        q.options.forEach(x => {
-                            let sibling = document.getElementById(`opt-item-${q.id}-${x.letter}`);
-                            if(sibling) sibling.classList.remove('selected');
-                        });
-                        optItem.classList.add('selected');
-                        selectedUserAnswers[q.id] = opt.letter;
-                    };
-                    optList.appendChild(optItem);
+            const button = document.getElementById(mode === 'note' ? 'noteGenBtn' : 'quizGenBtn');
+            const iframe = document.getElementById(mode === 'note' ? 'noteIframe' : 'quizIframe');
+            const frameWrapper = document.getElementById(mode === 'note' ? 'noteSandboxFrame' : 'quizSandboxFrame');
+
+            button.disabled = true;
+            button.innerText = "⏳ Generating UI Components...";
+
+            // Configure custom engineering rules depending on tab context
+            let systemInstruction = "";
+            if (mode === 'note') {
+                systemInstruction = "You are a professional web designer. Take this plain study notes or table text input and format it into a gorgeous, highly readable, clean note. Wrap everything inside a single standalone complete index.html block. Use advanced CSS layouts, clean modern tables with borders/padding, highlights, custom cards for bullet lists, professional readable fonts, and spacing. Do NOT omit or subtract any text content information, just beautify it. Respond ONLY with the valid HTML code block without markdown wrappers.";
+            } else {
+                systemInstruction = "You are an interaction developer. Take this quiz raw text and answer key input and build a live interactive multiple choice testing app component. Wrap everything inside a single standalone complete index.html block containing HTML, embedded CSS styles, and JavaScript logic. The code must let the user click on option items, save their selections, click a 'Verify Answers' button, check selections against the provided key, and immediately render vivid success (green) or error (red) visual highlights on the choices. Respond ONLY with valid, self-contained runnable HTML source code without any triple-backtick markdown blocks.";
+            }
+
+            try {
+                // Fetch to Gemini API model endpoint directly
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ text: systemInstruction + "\n\nInput Content:\n" + rawText }]
+                        }]
+                    })
                 });
-                
-                qCard.appendChild(optList);
-                container.appendChild(qCard);
-            });
 
-            body.style.display = "block";
-            showToast(`🚀 Successfully generated ${arrayList.length} active questions!`);
-        }
+                const data = await response.json();
+                let generatedHtml = data.candidates[0].content.parts[0].text.trim();
 
-        function evaluateQuizAnswers() {
-            let score = 0;
-            let totalQs = runningQuizData.questions.length;
-            if(totalQs === 0) return;
+                // Clean up any extra triple backtick wraps if the model returned them
+                if (generatedHtml.startsWith("```html")) {
+                    generatedHtml = generatedHtml.substring(7, generatedHtml.lastIndexOf("```"));
+                } else if (generatedHtml.startsWith("```")) {
+                    generatedHtml = generatedHtml.substring(3, generatedHtml.lastIndexOf("```"));
+                }
 
-            runningQuizData.questions.forEach(q => {
-                let selected = selectedUserAnswers[q.id];
-                let correct = runningQuizData.key[q.id];
+                // Mount the returned HTML programmatically to the sandboxed iframe canvas securely
+                iframe.srcdoc = generatedHtml;
+                frameWrapper.style.display = "block";
+                showToast("✨ Premium component constructed successfully!");
 
-                q.options.forEach(opt => {
-                    let optItem = document.getElementById(`opt-item-${q.id}-${opt.letter}`);
-                    if(optItem) {
-                        optItem.classList.remove('selected', 'correct-fill', 'wrong-fill');
-                        if (opt.letter === correct) optItem.classList.add('correct-fill');
-                        if (selected === opt.letter && selected !== correct) optItem.classList.add('wrong-fill');
-                    }
-                });
-                if(selected === correct) score++;
-            });
-
-            const scoreDisplay = document.getElementById('quizScoreDisplay');
-            scoreDisplay.innerText = `🎯 Verified Score: ${score} / ${totalQs} (${Math.round((score/totalQs)*100)}%)`;
-            scoreDisplay.style.display = "block";
-            document.getElementById('quizSubmitBtn').style.display = "none";
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            showToast("📊 Evaluation calculation complete!");
+            } catch (err) {
+                console.error(err);
+                alert("Gemini API Engine failed. Please verify your connection or Key authorizations.");
+            } finally {
+                button.disabled = false;
+                button.innerText = mode === 'note' ? "✨ AI Premium Render Layout" : "🚀 AI Build Interactive Test";
+            }
         }
 
         function renderApp() {
