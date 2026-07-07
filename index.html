@@ -45,10 +45,8 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg); color: var(--text); padding: 16px; display: flex; justify-content: center; min-height: 100vh; transition: background 0.3s, color 0.3s; }
         
-        /* Responsive Unified App Container */
         .app-container { width: 100%; max-width: 1200px; display: flex; flex-direction: column; gap: 20px; padding-bottom: 80px; position: relative; }
         
-        /* Navigation Top Bar Header */
         .brand-header { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
         .logo-group { display: flex; align-items: center; gap: 10px; }
         .logo-img { width: 38px; height: 38px; border-radius: 8px; }
@@ -56,7 +54,6 @@
         .header-controls { display: flex; align-items: center; gap: 12px; }
         .theme-toggle { background: var(--card); border: 1px solid var(--border); width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
         
-        /* Premium Banner Widget */
         .widget-banner { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #ffffff; padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 12px; position: relative; overflow: hidden; }
         .widget-banner::before { content: ''; position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: rgba(37, 99, 235, 0.2); filter: blur(40px); border-radius: 50%; }
         .widget-row { display: flex; justify-content: space-between; align-items: center; z-index: 1; }
@@ -64,8 +61,7 @@
         .widget-number { font-size: 1.8rem; font-weight: 800; color: #ffffff; line-height: 1.2; }
         .widget-label { font-size: 0.75rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
         
-        /* Base Component Card UI */
-        .card { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); height: height: max-content; }
+        .card { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); height: max-content; }
         .target-card { border: 2.5px solid var(--primary); text-align: center; display: flex; flex-direction: column; align-items: center; }
         
         .badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; color: white; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -80,18 +76,15 @@
         .action-btn { background: var(--success); color: white; border: none; padding: 14px 24px; border-radius: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; width: 100%; transition: transform 0.1s; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
         .action-btn:active { transform: scale(0.98); }
 
-        /* NotebookLM Layout Grid */
         .prompt-grid { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; width: 100%; border-top: 1px dashed var(--border); padding-top: 16px; }
         .prompt-btn { flex: 1 1 30%; background: var(--bg); color: var(--text); border: 1px solid var(--border); padding: 10px 4px; border-radius: 10px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: background 0.2s; display: flex; flex-direction: column; align-items: center; gap: 4px; }
         .prompt-btn:hover { background: var(--primary-light); border-color: var(--primary); }
         .prompt-btn span { font-size: 1.2rem; }
         .prompt-title { width: 100%; font-size: 0.85rem; color: var(--text-muted); font-weight: 700; margin-top: 4px; text-align: left; }
         
-        /* Split Module Layouts for Wide Laptop Screen sizes */
         .tracker-split-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
         .lists-wrapper { display: flex; flex-direction: column; gap: 16px; }
 
-        /* Lists layout components */
         .list-section { display: flex; flex-direction: column; gap: 8px; }
         .list-header { font-size: 1.05rem; font-weight: 700; color: var(--text-muted); padding-left: 4px; margin-top: 4px; display: flex; justify-content: space-between; align-items: center; }
         .count-tag { font-size: 0.8rem; background: var(--border); color: var(--text); padding: 2px 8px; border-radius: 12px; }
@@ -100,33 +93,33 @@
         .scroll-container::-webkit-scrollbar { width: 6px; }
         .scroll-container::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-        .unit-item { background: var(--card); border: 1px solid var(--border); padding: 14px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; }
+        .unit-item { background: var(--card); border: 1px solid var(--border); padding: 14px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: transform 0.1s; }
+        .unit-item:active { transform: scale(0.98); }
         .unit-item.done { opacity: 0.55; background: rgba(16, 185, 129, 0.03); }
         .unit-item h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 2px; line-height: 1.2; }
         .unit-item p { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
         .check-icon { color: var(--success); font-weight: bold; font-size: 1.1rem; }
+        .delete-btn { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; border-radius: 8px; padding: 6px 10px; font-weight: bold; cursor: pointer; font-size: 0.8rem; }
         
         .progress-bar-container { width: 100%; background: rgba(255,255,255,0.1); height: 8px; border-radius: 4px; overflow: hidden; margin-top: 4px; }
         .progress-bar { height: 100%; background: var(--success); transition: width 0.4s ease; width: 0%; }
 
-        /* Universal Tab Controls */
         .app-tab { display: none; flex-direction: column; gap: 16px; }
         .app-tab.active { display: flex; }
         
-        /* Modernized Side by Side Split Workspaces for Notes/Quiz inside Big Windows */
         .workspace-layout { display: grid; grid-template-columns: 1fr; gap: 20px; }
 
-        /* Configuration Key Management View Header */
         .key-wrapper { display: flex; gap: 8px; margin-bottom: 12px; align-items: center; }
         .key-input { flex: 1; padding: 11px; border-radius: 10px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); font-size: 0.85rem; }
 
-        /* Text Input controls */
         .textarea-input { width: 100%; height: 200px; padding: 14px; border-radius: 14px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); font-size: 0.9rem; resize: vertical; outline: none; margin-bottom: 12px; }
         .textarea-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
-        .primary-btn { background: var(--primary); color: white; border: none; padding: 14px 20px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; width: 100%; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2); display: flex; justify-content: center; align-items: center; gap: 8px; }
-        .primary-btn:disabled { opacity: 0.6; cursor: not-allowed; }
         
-        /* Sandboxed AI Code Viewport Mounts & Fullscreen Elements Configuration */
+        .btn-group { display: flex; gap: 8px; margin-top: 12px; }
+        .primary-btn { background: var(--primary); color: white; border: none; padding: 14px 20px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; flex: 1; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2); display: flex; justify-content: center; align-items: center; gap: 8px; transition: opacity 0.2s; }
+        .primary-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .secondary-btn { background: var(--text-muted); color: white; border: none; padding: 14px 20px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; flex: 1; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); display: none; }
+        
         .sandbox-mount-frame { border-radius: 16px; border: 1px solid var(--border); background: var(--card); overflow: hidden; display: none; min-height: 500px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); position: relative; flex-direction: column; }
         .sandbox-header-bar { background: var(--bg); padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .sandbox-title-text { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
@@ -134,28 +127,31 @@
         .fullscreen-btn:hover { background: var(--primary-light); color: var(--primary); }
         .sandbox-iframe { width: 100%; height: 550px; border: none; background: transparent; display: block; flex: 1; }
 
-        /* Fullscreen Request API fallback styling */
         .sandbox-mount-frame.is-fullscreen { position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; z-index: 99999 !important; border-radius: 0 !important; margin-top: 0 !important; }
         .sandbox-mount-frame.is-fullscreen .sandbox-iframe { height: calc(100vh - 45px) !important; background: #ffffff !important; }
 
-        /* Desktop Top Navbar layout overrides */
+        /* Fullscreen Library Viewer Overlay */
+        .library-viewer { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg); z-index: 100000; flex-direction: column; }
+        .library-viewer.active { display: flex; }
+        .lib-header { padding: 16px; background: var(--card); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .lib-header h3 { font-size: 1.1rem; color: var(--text); }
+        .close-lib-btn { background: var(--border); color: var(--text); border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .lib-iframe { flex: 1; width: 100%; border: none; background: #ffffff; }
+
         .desktop-navbar { display: none; gap: 8px; }
         .desktop-nav-item { background: var(--card); border: 1px solid var(--border); padding: 8px 16px; border-radius: 10px; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 6px; }
         .desktop-nav-item.active { background: var(--primary); border-color: var(--primary); color: white; }
 
-        /* Mobile Bottom App Bar Navigation Layout */
         .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 64px; background: var(--card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 999; box-shadow: 0 -4px 10px rgba(0,0,0,0.03); }
-        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: var(--text-muted); cursor: pointer; font-size: 0.7rem; font-weight: 700; width: 33.3%; height: 100%; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: var(--text-muted); cursor: pointer; font-size: 0.7rem; font-weight: 700; width: 25%; height: 100%; }
         .nav-item span { font-size: 1.3rem; }
         .nav-item.active { color: var(--primary); }
 
-        /* Toast Popup Alerts */
         #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 10px; padding: 16px; position: fixed; z-index: 100000; left: 50%; bottom: 80px; transform: translateX(-50%); font-size: 0.9rem; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 80px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 80px; opacity: 1;} to {bottom: 0; opacity: 0;} }
 
-        /* Media Queries handling Advanced Adaptive Grid Screen Reflows (Laptops/Desktops) */
         @media(min-width: 768px) {
             body { padding: 24px; }
             .bottom-nav { display: none; }
@@ -180,6 +176,7 @@
                     <div class="desktop-nav-item active" id="desk-nav-tracker" onclick="switchActiveTab('tracker')">🏠 Tracker</div>
                     <div class="desktop-nav-item" id="desk-nav-notes" onclick="switchActiveTab('notes')">📝 Note Canvas</div>
                     <div class="desktop-nav-item" id="desk-nav-quiz" onclick="switchActiveTab('quiz')">❓ Quiz Engine</div>
+                    <div class="desktop-nav-item" id="desk-nav-library" onclick="switchActiveTab('library')">📚 Library</div>
                 </div>
                 <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()">🌙</button>
             </div>
@@ -216,7 +213,6 @@
                         <h3 class="list-header">Syllabus Up Next <span class="count-tag" id="upcomingCount">0</span></h3>
                         <div class="scroll-container" id="upcomingList"></div>
                     </div>
-
                     <div class="list-section">
                         <h3 class="list-header">Completed Items <span class="count-tag" id="completedCount" style="background-color:rgba(16,185,129,0.15); color:var(--success);">0</span></h3>
                         <div class="scroll-container" id="completedList"></div>
@@ -229,20 +225,24 @@
             <div class="workspace-layout">
                 <div class="card">
                     <h3 style="margin-bottom: 4px; font-weight: 800;">📝 Note AI Render Engine</h3>
-                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Transforms notes, messy text blocks, and curriculum layout tables into styled responsive HTML assets via Gemini.</p>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Transforms messy textbook copy into styled responsive HTML assets.</p>
                     
                     <div class="key-wrapper">
                         <input type="password" class="key-input" id="noteApiKey" placeholder="Paste Gemini API Key..." onchange="saveApiKeys(this.value)">
                     </div>
 
-                    <textarea class="textarea-input" id="noteRawInput" placeholder="Paste textbook text details, notes, data comparison maps, or text tables from NotebookLM here..."></textarea>
-                    <button class="primary-btn" id="noteGenBtn" onclick="requestAiRender('note')">✨ Run AI Designer Layout</button>
+                    <textarea class="textarea-input" id="noteRawInput" placeholder="Paste notes or texts here..."></textarea>
+                    
+                    <div class="btn-group">
+                        <button class="primary-btn" id="noteGenBtn" onclick="requestAiRender('note')">✨ Render Layout</button>
+                        <button class="secondary-btn" id="noteSaveBtn" onclick="saveToLibrary('note')">💾 Save Note</button>
+                    </div>
                 </div>
                 
                 <div class="sandbox-mount-frame" id="noteSandboxFrame">
                     <div class="sandbox-header-bar">
                         <span class="sandbox-title-text">✨ Live Render Viewport</span>
-                        <button class="fullscreen-btn" onclick="toggleFullscreenContainer('noteSandboxFrame')">🖥️ Toggle Fullscreen Mode</button>
+                        <button class="fullscreen-btn" onclick="toggleFullscreenContainer('noteSandboxFrame')">🖥️ Fullscreen</button>
                     </div>
                     <iframe class="sandbox-iframe" id="noteIframe"></iframe>
                 </div>
@@ -253,37 +253,70 @@
             <div class="workspace-layout">
                 <div class="card">
                     <h3 style="margin-bottom: 4px; font-weight: 800;">📋 AI Interactive Quiz Generator</h3>
-                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Paste raw unorganized multiple choice prints + keys together. Gemini will design an interactive local application module.</p>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Gemini turns raw questions + answer keys into a live playable test.</p>
                     
                     <div class="key-wrapper">
                         <input type="password" class="key-input" id="quizApiKey" placeholder="Paste Gemini API Key..." onchange="saveApiKeys(this.value)">
                     </div>
 
-                    <textarea class="textarea-input" id="quizRawInput" placeholder="Paste raw textbook multiple choice question prints along with its Answer Key text strings together here..."></textarea>
-                    <button class="primary-btn" id="quizGenBtn" style="background: var(--success);" onclick="requestAiRender('quiz')">🚀 Build Active UI Quiz</button>
+                    <textarea class="textarea-input" id="quizRawInput" placeholder="Paste questions + answer keys here..."></textarea>
+                    
+                    <div class="btn-group">
+                        <button class="primary-btn" id="quizGenBtn" style="background: var(--success);" onclick="requestAiRender('quiz')">🚀 Build Quiz UI</button>
+                        <button class="secondary-btn" id="quizSaveBtn" onclick="saveToLibrary('quiz')">💾 Save Quiz</button>
+                    </div>
                 </div>
                 
                 <div class="sandbox-mount-frame" id="quizSandboxFrame">
                     <div class="sandbox-header-bar">
                         <span class="sandbox-title-text">📋 Live Test Terminal</span>
-                        <button class="fullscreen-btn" onclick="toggleFullscreenContainer('quizSandboxFrame')">🖥️ Toggle Fullscreen Mode</button>
+                        <button class="fullscreen-btn" onclick="toggleFullscreenContainer('quizSandboxFrame')">🖥️ Fullscreen</button>
                     </div>
                     <iframe class="sandbox-iframe" id="quizIframe"></iframe>
                 </div>
             </div>
         </div>
 
-        <div id="toast">Prompt string duplicated to dashboard clipboard clipboard!</div>
+        <div id="tab-library" class="app-tab">
+            <div class="card" style="margin-bottom: 16px;">
+                <h3 style="margin-bottom: 4px; font-weight: 800;">📚 Offline Database Vault</h3>
+                <p style="font-size: 0.75rem; color: var(--text-muted);">Saved notes and quizzes are permanently stored in your device's internal App Database (IndexedDB) for robust offline access.</p>
+            </div>
+            
+            <div class="tracker-split-grid">
+                <div class="list-section">
+                    <h3 class="list-header">📝 Saved Notes</h3>
+                    <div class="scroll-container" id="savedNotesList" style="max-height: 400px;"></div>
+                </div>
+                <div class="list-section">
+                    <h3 class="list-header">❓ Saved Quizzes</h3>
+                    <div class="scroll-container" id="savedQuizzesList" style="max-height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="library-viewer" id="libraryViewerOverlay">
+            <div class="lib-header">
+                <h3 id="libViewerTitle">Document Title</h3>
+                <button class="close-lib-btn" onclick="closeLibraryViewer()">✕ Close</button>
+            </div>
+            <iframe class="lib-iframe" id="libViewerIframe"></iframe>
+        </div>
+
+        <div id="toast">Alert!</div>
 
         <nav class="bottom-nav">
             <div class="nav-item active" id="btn-nav-tracker" onclick="switchActiveTab('tracker')">
                 <span>🏠</span>Track
             </div>
             <div class="nav-item" id="btn-nav-notes" onclick="switchActiveTab('notes')">
-                <span>📝</span>Note View
+                <span>📝</span>Notes
             </div>
             <div class="nav-item" id="btn-nav-quiz" onclick="switchActiveTab('quiz')">
-                <span>❓</span>Live Quiz
+                <span>❓</span>Quiz
+            </div>
+            <div class="nav-item" id="btn-nav-library" onclick="switchActiveTab('library')">
+                <span>📚</span>Vault
             </div>
         </nav>
     </div>
@@ -379,19 +412,22 @@
         ];
 
         let currentIndex = parseInt(localStorage.getItem('studysync_index_finalv2')) || 0;
+        
+        // Temporarily store generated HTML in RAM before saving to DB
+        let currentGeneratedNote = "";
+        let currentGeneratedQuiz = "";
 
-        // Initialize saved API Key parameters across views
+        // API Key Init
         const savedKey = localStorage.getItem('studysync_gemini_key') || '';
         document.getElementById('noteApiKey').value = savedKey;
         document.getElementById('quizApiKey').value = savedKey;
-
         function saveApiKeys(val) {
             localStorage.setItem('studysync_gemini_key', val.trim());
             document.getElementById('noteApiKey').value = val.trim();
             document.getElementById('quizApiKey').value = val.trim();
         }
 
-        // Theme management operations
+        // Theme
         if (localStorage.getItem('studysync_theme') === 'dark') {
             document.body.classList.add('dark');
             document.getElementById('themeToggleBtn').innerText = "☀️";
@@ -408,7 +444,6 @@
             }
         }
 
-        // Unified layout switcher for responsive UI sync controls
         function switchActiveTab(tabName) {
             document.querySelectorAll('.app-tab').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -433,7 +468,6 @@
             }
         }
 
-        // Automated Layout copy system configurations
         window.copyPrompt = function(type, subject, grade, title) {
             let promptText = "";
             const context = `Grade ${grade} ${subject} - ${title}`;
@@ -464,53 +498,156 @@
             setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
         }
 
-        // Dynamic Native Fullscreen Canvas Mode Controller Fallback
         function toggleFullscreenContainer(frameId) {
             const element = document.getElementById(frameId);
             if (!element) return;
-
-            // Use browser requestFullscreen API if authorized natively
             if (element.requestFullscreen) {
                 if (!document.fullscreenElement) {
-                    element.requestFullscreen().catch(err => {
-                        element.classList.toggle('is-fullscreen');
-                    });
+                    element.requestFullscreen().catch(err => element.classList.toggle('is-fullscreen'));
                 } else {
                     document.exitFullscreen();
                 }
             } else {
-                // Class-based styling fallback route for sandboxed containers
                 element.classList.toggle('is-fullscreen');
             }
         }
 
-        // Sync local adjustments on native fullscreen exits
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
                 document.querySelectorAll('.sandbox-mount-frame').forEach(el => el.classList.remove('is-fullscreen'));
             }
         });
 
-        // ================= GEMINI API SANDBOX COMPONENT GENERATOR ENGINE =================
+        // ================= ROBUST IndexedDB OFFLINE VAULT =================
+        const DB_NAME = 'StudySyncVault';
+        let db;
+
+        const request = indexedDB.open(DB_NAME, 1);
+        request.onupgradeneeded = (e) => {
+            db = e.target.result;
+            db.createObjectStore("library", { keyPath: "id" });
+        };
+        request.onsuccess = (e) => {
+            db = e.target.result;
+            loadLibrary();
+        };
+
+        function saveToLibrary(type) {
+            const htmlContent = type === 'note' ? currentGeneratedNote : currentGeneratedQuiz;
+            if(!htmlContent) {
+                showToast("No generated content to save yet!");
+                return;
+            }
+
+            // Bind it to the current lesson tracking state
+            let currentUnitTitle = "Custom AI Import";
+            if (currentIndex < curriculumData.length) {
+                const u = curriculumData[currentIndex];
+                currentUnitTitle = `G${u.grade} ${u.subject}: ${u.title}`;
+            }
+
+            const item = {
+                id: Date.now(),
+                type: type,
+                title: currentUnitTitle,
+                content: htmlContent,
+                date: new Date().toLocaleDateString()
+            };
+
+            const tx = db.transaction("library", "readwrite");
+            tx.objectStore("library").add(item);
+            tx.oncomplete = () => {
+                showToast(`💾 Saved to your Offline Vault!`);
+                
+                // Hide save buttons after successful lock
+                if(type === 'note') document.getElementById('noteSaveBtn').style.display = 'none';
+                if(type === 'quiz') document.getElementById('quizSaveBtn').style.display = 'none';
+                
+                loadLibrary(); // refresh UI lists
+            };
+        }
+
+        function deleteFromLibrary(id) {
+            if(!confirm("Delete this from your vault permanently?")) return;
+            const tx = db.transaction("library", "readwrite");
+            tx.objectStore("library").delete(id);
+            tx.oncomplete = () => {
+                showToast("🗑️ Item deleted.");
+                loadLibrary();
+            };
+        }
+
+        function openLibraryViewer(id) {
+            const tx = db.transaction("library", "readonly");
+            const request = tx.objectStore("library").get(id);
+            request.onsuccess = (e) => {
+                const data = e.target.result;
+                if(data) {
+                    document.getElementById('libViewerTitle').innerText = data.title;
+                    document.getElementById('libViewerIframe').srcdoc = data.content;
+                    document.getElementById('libraryViewerOverlay').classList.add('active');
+                }
+            };
+        }
+
+        function closeLibraryViewer() {
+            document.getElementById('libraryViewerOverlay').classList.remove('active');
+            document.getElementById('libViewerIframe').srcdoc = ""; // Clear memory
+        }
+
+        function loadLibrary() {
+            if(!db) return;
+            const notesList = document.getElementById('savedNotesList');
+            const quizzesList = document.getElementById('savedQuizzesList');
+            notesList.innerHTML = "";
+            quizzesList.innerHTML = "";
+
+            const tx = db.transaction("library", "readonly");
+            const store = tx.objectStore("library");
+            const request = store.openCursor(null, "prev"); // newest first
+
+            request.onsuccess = (e) => {
+                const cursor = e.target.result;
+                if(cursor) {
+                    const item = cursor.value;
+                    const layout = `
+                        <div class="unit-item">
+                            <div style="flex:1;" onclick="openLibraryViewer(${item.id})">
+                                <h4>${item.title}</h4>
+                                <p>Saved: ${item.date}</p>
+                            </div>
+                            <button class="delete-btn" onclick="deleteFromLibrary(${item.id})">✕</button>
+                        </div>
+                    `;
+
+                    if(item.type === 'note') notesList.insertAdjacentHTML('beforeend', layout);
+                    else if(item.type === 'quiz') quizzesList.insertAdjacentHTML('beforeend', layout);
+                    
+                    cursor.continue();
+                } else {
+                    if(notesList.innerHTML === "") notesList.innerHTML = "<p style='color:var(--text-muted); font-size:0.85rem;'>No offline notes saved yet.</p>";
+                    if(quizzesList.innerHTML === "") quizzesList.innerHTML = "<p style='color:var(--text-muted); font-size:0.85rem;'>No offline quizzes saved yet.</p>";
+                }
+            };
+        }
+
+
+        // ================= GEMINI API SANDBOX COMPONENT GENERATOR =================
         async function requestAiRender(mode) {
             const apiKey = localStorage.getItem('studysync_gemini_key');
-            if(!apiKey) {
-                alert("Please paste your Gemini API Key first!");
-                return;
-            }
+            if(!apiKey) { alert("Please paste your Gemini API Key first!"); return; }
 
             const rawText = document.getElementById(mode === 'note' ? 'noteRawInput' : 'quizRawInput').value.trim();
-            if(!rawText) {
-                alert("Please paste the plain text payload from NotebookLM first!");
-                return;
-            }
+            if(!rawText) { alert("Please paste the plain text payload from NotebookLM first!"); return; }
 
             const button = document.getElementById(mode === 'note' ? 'noteGenBtn' : 'quizGenBtn');
+            const saveButton = document.getElementById(mode === 'note' ? 'noteSaveBtn' : 'quizSaveBtn');
             const iframe = document.getElementById(mode === 'note' ? 'noteIframe' : 'quizIframe');
             const frameWrapper = document.getElementById(mode === 'note' ? 'noteSandboxFrame' : 'quizSandboxFrame');
 
             button.disabled = true;
             button.innerText = "⏳ Building Viewports...";
+            saveButton.style.display = 'none';
 
             let systemInstruction = "";
             if (mode === 'note') {
@@ -533,14 +670,17 @@
                 const data = await response.json();
                 let generatedHtml = data.candidates[0].content.parts[0].text.trim();
 
-                if (generatedHtml.startsWith("```html")) {
-                    generatedHtml = generatedHtml.substring(7, generatedHtml.lastIndexOf("```"));
-                } else if (generatedHtml.startsWith("```")) {
-                    generatedHtml = generatedHtml.substring(3, generatedHtml.lastIndexOf("```"));
-                }
+                if (generatedHtml.startsWith("```html")) generatedHtml = generatedHtml.substring(7, generatedHtml.lastIndexOf("```"));
+                else if (generatedHtml.startsWith("```")) generatedHtml = generatedHtml.substring(3, generatedHtml.lastIndexOf("```"));
+
+                // Store in memory so user can click 'Save' if they like it
+                if (mode === 'note') currentGeneratedNote = generatedHtml;
+                else currentGeneratedQuiz = generatedHtml;
 
                 iframe.srcdoc = generatedHtml;
                 frameWrapper.style.display = "flex";
+                saveButton.style.display = "flex"; // Reveal Save feature
+
                 showToast("✨ Premium interface built successfully!");
 
             } catch (err) {
