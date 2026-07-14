@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LifeSync Pro</title>
+    <title>StudySync Pro</title>
     
-    <link rel="manifest" href="manifest.json">
+    <link class="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="LifeSync">
-    <meta name="theme-color" content="#0d9488">
+    <meta name="apple-mobile-web-app-title" content="StudySync">
+    <meta name="theme-color" content="#4f46e5">
     
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2693/2693507.png">
-    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2693/2693507.png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2232/2232688.png">
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2232/2232688.png">
 
     <style>
         :root {
             --bg: #f1f5f9;
             --card: #ffffff;
-            --primary: #0d9488;
-            --primary-light: rgba(13, 148, 136, 0.1);
-            --secondary: #4f46e5;
-            --secondary-light: rgba(79, 70, 229, 0.1);
+            --primary: #4f46e5;
+            --primary-light: rgba(79, 70, 229, 0.1);
+            --secondary: #0d9488;
+            --secondary-light: rgba(13, 148, 136, 0.1);
             --text: #0f172a;
             --text-muted: #64748b;
             --border: #e2e8f0;
@@ -31,10 +31,10 @@
         body.dark {
             --bg: #0f172a;
             --card: #1e293b;
-            --primary: #14b8a6;
-            --primary-light: rgba(20, 184, 166, 0.15);
-            --secondary: #6366f1;
-            --secondary-light: rgba(99, 102, 241, 0.15);
+            --primary: #6366f1;
+            --primary-light: rgba(99, 102, 241, 0.15);
+            --secondary: #14b8a6;
+            --secondary-light: rgba(20, 184, 166, 0.15);
             --text: #f8fafc;
             --text-muted: #94a3b8;
             --border: #334155;
@@ -47,7 +47,7 @@
         
         /* Lock Screen */
         .lock-screen { position: fixed; inset: 0; background: var(--bg); z-index: 100000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; transition: opacity 0.3s; }
-        .lock-logo { width: 80px; height: 80px; border-radius: 20px; margin-bottom: 24px; box-shadow: 0 10px 25px rgba(13, 148, 136, 0.3); }
+        .lock-logo { width: 80px; height: 80px; border-radius: 20px; margin-bottom: 24px; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3); }
         .lock-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; color: var(--text); }
         .lock-subtitle { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 32px; text-align: center; max-width: 280px; }
         
@@ -154,8 +154,8 @@
 <body>
 
     <div class="lock-screen" id="lockScreen">
-        <img src="https://cdn-icons-png.flaticon.com/512/2693/2693507.png" class="lock-logo" alt="LifeSync">
-        <div class="lock-title">LifeSync</div>
+        <img src="https://cdn-icons-png.flaticon.com/512/2232/2232688.png" class="lock-logo" alt="StudySync">
+        <div class="lock-title">StudySync Pro</div>
         <div class="lock-subtitle" id="lockSubtitle">Authenticating...</div>
 
         <div id="bioView">
@@ -193,8 +193,8 @@
     <div class="app-container" id="mainApp">
         <div class="brand-header">
             <div class="logo-group">
-                <img src="https://cdn-icons-png.flaticon.com/512/2693/2693507.png" class="logo-img" alt="logo">
-                <span class="brand-name">LifeSync</span>
+                <img src="https://cdn-icons-png.flaticon.com/512/2232/2232688.png" class="logo-img" alt="logo">
+                <span class="brand-name">StudySync</span>
             </div>
             <div style="display: flex; gap: 8px;">
                 <button class="theme-toggle" onclick="lockApp()" style="font-size:0.9rem;">🔒</button>
@@ -221,11 +221,11 @@
         </div>
 
         <div id="tab-library" class="app-tab">
-            <div class="form-group" style="background: var(--secondary-light); border-color: rgba(79, 70, 229, 0.2);">
-                <h3 style="color: var(--secondary);">📚 AI Study Importer</h3>
+            <div class="form-group" style="background: var(--primary-light); border-color: rgba(79, 70, 229, 0.2);">
+                <h3 style="color: var(--primary);">📚 AI Study Importer</h3>
                 <p style="font-size: 0.8rem; color: var(--text-muted);">Upload custom HTML study guides, cheatsheets, or quizzes created by external AIs directly into your app.</p>
                 
-                <button class="btn btn-primary" style="background: var(--secondary);" onclick="triggerHtmlImport()">
+                <button class="btn btn-primary" onclick="triggerHtmlImport()">
                     ➕ Import HTML Module
                 </button>
                 <input type="file" id="htmlFileImport" accept=".html" style="display: none;" onchange="importHtmlModule(event)">
@@ -269,7 +269,7 @@
                 <h3>📌 Recurring Habits</h3>
                 <p style="font-size: 0.8rem; color: var(--text-muted);">Tasks that repeat on specific days.</p>
                 <div class="input-row">
-                    <input type="text" id="newHabitInput" class="input-field" placeholder="e.g. Church, Gym...">
+                    <input type="text" id="newHabitInput" class="input-field" placeholder="e.g. Math Practice, Gym...">
                     <input type="time" id="newHabitTime" class="input-field" style="max-width: 130px;">
                 </div>
                 
@@ -345,16 +345,16 @@
 
     <script>
         // ================= MASTER LIFE CYCLE DATABASE =================
-        let habits = JSON.parse(localStorage.getItem('lifesync_habits')) || [];
-        let events = JSON.parse(localStorage.getItem('lifesync_events')) || [];
-        let history = JSON.parse(localStorage.getItem('lifesync_history')) || {};
-        let library = JSON.parse(localStorage.getItem('lifesync_library')) || []; // HTML modules array
+        let habits = JSON.parse(localStorage.getItem('studysync_habits')) || [];
+        let events = JSON.parse(localStorage.getItem('studysync_events')) || [];
+        let history = JSON.parse(localStorage.getItem('studysync_history')) || {};
+        let library = JSON.parse(localStorage.getItem('studysync_library')) || []; // HTML modules array
 
         function saveData() {
-            localStorage.setItem('lifesync_habits', JSON.stringify(habits));
-            localStorage.setItem('lifesync_events', JSON.stringify(events));
-            localStorage.setItem('lifesync_history', JSON.stringify(history));
-            localStorage.setItem('lifesync_library', JSON.stringify(library));
+            localStorage.setItem('studysync_habits', JSON.stringify(habits));
+            localStorage.setItem('studysync_events', JSON.stringify(events));
+            localStorage.setItem('studysync_history', JSON.stringify(history));
+            localStorage.setItem('studysync_library', JSON.stringify(library));
         }
 
         // ================= MASTER BACKUP ENGINE (ALL DATA INSIDE ONE JSON) =================
@@ -373,7 +373,7 @@
             
             const a = document.createElement("a");
             a.href = url;
-            a.download = `lifesync_master_backup_${Date.now()}.json`;
+            a.download = `studysync_master_backup_${Date.now()}.json`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -515,8 +515,8 @@
         let isSettingPin = false;
         let tempSetupPin = "";
         
-        const savedPin = localStorage.getItem('lifesync_pin');
-        const hasBiometrics = localStorage.getItem('lifesync_bio_credential');
+        const savedPin = localStorage.getItem('studysync_pin');
+        const hasBiometrics = localStorage.getItem('studysync_bio_credential');
 
         function initSecurityLifecycle() {
             if (!savedPin) {
@@ -575,7 +575,7 @@
                     clearPin();
                 } else {
                     if (currentPinAttempt === tempSetupPin) {
-                        localStorage.setItem('lifesync_pin', currentPinAttempt);
+                        localStorage.setItem('studysync_pin', currentPinAttempt);
                         unlockApp();
                     } else {
                         document.getElementById('lockSubtitle').innerText = "PINs did not match. Resetting setup...";
@@ -615,21 +615,21 @@
             try {
                 const publicKey = {
                     challenge: generateRandomBuffer(32),
-                    rp: { name: "LifeSync Tracker" },
-                    user: { id: generateRandomBuffer(16), name: "lifesync_user", displayName: "LifeSync User" },
+                    rp: { name: "StudySync Tracker" },
+                    user: { id: generateRandomBuffer(16), name: "studysync_user", displayName: "StudySync User" },
                     pubKeyCredParams: [{ type: "public-key", alg: -7 }, { type: "public-key", alg: -257 }],
                     authenticatorSelection: { userVerification: "required" },
                     timeout: 60000
                 };
                 const credential = await navigator.credentials.create({ publicKey });
                 const idBase64 = btoa(String.fromCharCode(...new Uint8Array(credential.rawId)));
-                localStorage.setItem('lifesync_bio_credential', idBase64);
+                localStorage.setItem('studysync_bio_credential', idBase64);
                 alert("✅ Fingerprint/FaceID successfully linked!");
             } catch (err) { alert("Biometric enrollment failed."); }
         }
 
         async function triggerBiometrics() {
-            const storedCredIdBase64 = localStorage.getItem('lifesync_bio_credential');
+            const storedCredIdBase64 = localStorage.getItem('studysync_bio_credential');
             if (!storedCredIdBase64) return;
             try {
                 const binaryId = Uint8Array.from(atob(storedCredIdBase64), c => c.charCodeAt(0));
@@ -670,7 +670,7 @@
             return daysArr.map(d => names[d]).join(', ');
         }
 
-        if (localStorage.getItem('lifesync_theme') === 'dark') {
+        if (localStorage.getItem('studysync_theme') === 'dark') {
             document.body.classList.add('dark');
             document.getElementById('themeToggleBtn').innerText = "☀️";
         }
@@ -678,7 +678,7 @@
         function toggleTheme() {
             document.body.classList.toggle('dark');
             const isDark = document.body.classList.contains('dark');
-            localStorage.setItem('lifesync_theme', isDark ? 'dark' : 'light');
+            localStorage.setItem('studysync_theme', isDark ? 'dark' : 'light');
             document.getElementById('themeToggleBtn').innerText = isDark ? "☀️" : "🌙";
         }
 
@@ -758,6 +758,7 @@
             saveData(); renderAgenda(); renderStats(); 
         }
 
+        // ================= STATS ENGINE =================
         function renderStats() {
             let totalToday = 0;
             habits.forEach(h => { if (!h.days || h.days.includes(TODAY_DAY_OF_WEEK)) totalToday++; });
