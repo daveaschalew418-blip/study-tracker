@@ -3,200 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>StudySync Tracker</title>
+    <title>LifeSync Pro</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="StudySync">
-    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-title" content="LifeSync">
+    <meta name="theme-color" content="#0d9488">
     
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135810.png">
-    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/3135/3135810.png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2693/2693507.png">
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2693/2693507.png">
 
     <style>
         :root {
-            --bg: #f8fafc;
+            --bg: #f1f5f9;
             --card: #ffffff;
-            --primary: #2563eb;
-            --primary-light: rgba(37, 99, 235, 0.08);
-            --success: #10b981;
-            --danger: #ef4444;
+            --primary: #0d9488;
+            --primary-light: rgba(13, 148, 136, 0.1);
+            --secondary: #4f46e5;
+            --secondary-light: rgba(79, 70, 229, 0.1);
             --text: #0f172a;
             --text-muted: #64748b;
             --border: #e2e8f0;
-            --math: #ef4444;
-            --physics: #f59e0b;
-            --chem: #06b6d4;
-            --bio: #8b5cf6;
-            --input-bg: #ffffff;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
         }
         body.dark {
             --bg: #0f172a;
             --card: #1e293b;
-            --primary: #3b82f6;
-            --primary-light: rgba(59, 130, 246, 0.15);
-            --success: #10b981;
-            --danger: #f87171;
+            --primary: #14b8a6;
+            --primary-light: rgba(20, 184, 166, 0.15);
+            --secondary: #6366f1;
+            --secondary-light: rgba(99, 102, 241, 0.15);
             --text: #f8fafc;
             --text-muted: #94a3b8;
             --border: #334155;
-            --input-bg: #0f172a;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg); color: var(--text); padding: 16px; display: flex; justify-content: center; min-height: 100vh; transition: background 0.3s, color 0.3s; }
         
-        .app-container { width: 100%; max-width: 1200px; display: flex; flex-direction: column; gap: 20px; padding-bottom: 80px; position: relative; }
+        .app-container { width: 100%; max-width: 480px; display: none; flex-direction: column; gap: 20px; padding-bottom: 80px; position: relative; }
+        .app-container.unlocked { display: flex; }
         
-        .brand-header { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+        /* Lock Screen */
+        .lock-screen { position: fixed; inset: 0; background: var(--bg); z-index: 100000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; transition: opacity 0.3s; }
+        .lock-logo { width: 80px; height: 80px; border-radius: 20px; margin-bottom: 24px; box-shadow: 0 10px 25px rgba(13, 148, 136, 0.3); }
+        .lock-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; color: var(--text); }
+        .lock-subtitle { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 32px; text-align: center; max-width: 280px; }
+        
+        #bioView, #pinView { display: none; flex-direction: column; align-items: center; width: 100%; }
+        .bio-pulse-icon { font-size: 4.5rem; margin-bottom: 24px; cursor: pointer; animation: pulse 2s infinite; }
+        .switch-lock-btn { background: var(--card); border: 1px solid var(--border); padding: 12px 24px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; color: var(--text); cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        
+        .pin-dots { display: flex; gap: 16px; margin-bottom: 32px; }
+        .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--primary); transition: all 0.2s; }
+        .pin-dot.filled { background: var(--primary); }
+        .pin-dot.error { border-color: var(--danger); background: var(--danger); animation: shake 0.3s; }
+        
+        .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: 100%; max-width: 300px; }
+        .num-btn { background: var(--card); border: 1px solid var(--border); color: var(--text); font-size: 1.5rem; font-weight: 700; height: 65px; border-radius: 16px; cursor: pointer; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.02); transition: transform 0.1s; }
+        .num-btn:active { transform: scale(0.95); background: var(--primary-light); }
+        .action-num-btn { font-size: 1rem; color: var(--text-muted); background: transparent; border: none; box-shadow: none; }
+        
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.08); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
+
+        /* Header */
+        .brand-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
         .logo-group { display: flex; align-items: center; gap: 10px; }
-        .logo-img { width: 38px; height: 38px; border-radius: 8px; }
-        .brand-name { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; }
-        .header-controls { display: flex; align-items: center; gap: 12px; }
-        .theme-toggle { background: var(--card); border: 1px solid var(--border); width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
-        
-        .widget-banner { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #ffffff; padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 12px; position: relative; overflow: hidden; }
-        .widget-banner::before { content: ''; position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: rgba(37, 99, 235, 0.2); filter: blur(40px); border-radius: 50%; }
-        .widget-row { display: flex; justify-content: space-between; align-items: center; z-index: 1; }
-        .widget-stat { display: flex; flex-direction: column; }
-        .widget-number { font-size: 1.8rem; font-weight: 800; color: #ffffff; line-height: 1.2; }
-        .widget-label { font-size: 0.75rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-        
-        .card { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); height: max-content; }
-        .target-card { border: 2.5px solid var(--primary); text-align: center; display: flex; flex-direction: column; align-items: center; }
-        
-        .badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; color: white; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .badge.Math { background: var(--math); }
-        .badge.Physics { background: var(--physics); }
-        .badge.Chemistry { background: var(--chem); }
-        .badge.Biology { background: var(--bio); }
+        .logo-img { width: 34px; height: 34px; border-radius: 8px; }
+        .brand-name { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.5px; }
+        .theme-toggle { background: var(--card); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
 
-        .unit-title { font-size: 1.35rem; font-weight: 800; margin-bottom: 4px; line-height: 1.3; letter-spacing: -0.3px; }
-        .unit-grade { color: var(--text-muted); font-size: 0.95rem; font-weight: 600; margin-bottom: 16px; }
-        
-        .action-btn { background: var(--success); color: white; border: none; padding: 14px 24px; border-radius: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; width: 100%; transition: transform 0.1s; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
-        .action-btn:active { transform: scale(0.98); }
+        /* Welcome Card */
+        .greeting-card { background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 20px; border-radius: 20px; color: white; position: relative; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        .greeting-time { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; }
+        .greeting-text { font-size: 1.6rem; font-weight: 800; margin-top: 4px; line-height: 1.2; }
+        .greeting-sub { font-size: 0.9rem; margin-top: 8px; opacity: 0.9; font-weight: 500; }
 
-        .prompt-grid { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; width: 100%; border-top: 1px dashed var(--border); padding-top: 16px; }
-        .prompt-btn { flex: 1 1 30%; background: var(--bg); color: var(--text); border: 1px solid var(--border); padding: 10px 4px; border-radius: 10px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: background 0.2s; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .prompt-btn:hover { background: var(--primary-light); border-color: var(--primary); }
-        .prompt-btn span { font-size: 1.2rem; }
-        .prompt-title { width: 100%; font-size: 0.85rem; color: var(--text-muted); font-weight: 700; margin-top: 4px; text-align: left; }
-        
-        .tracker-split-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-        .lists-wrapper { display: flex; flex-direction: column; gap: 16px; }
-
-        .list-section { display: flex; flex-direction: column; gap: 8px; }
-        .list-header { font-size: 1.05rem; font-weight: 700; color: var(--text-muted); padding-left: 4px; margin-top: 4px; display: flex; justify-content: space-between; align-items: center; }
-        .count-tag { font-size: 0.8rem; background: var(--border); color: var(--text); padding: 2px 8px; border-radius: 12px; }
-
-        .scroll-container { max-height: 320px; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 8px; }
-        .scroll-container::-webkit-scrollbar { width: 6px; }
-        .scroll-container::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-
-        .unit-item { background: var(--card); border: 1px solid var(--border); padding: 14px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: transform 0.1s; }
-        .unit-item:active { transform: scale(0.98); }
-        .unit-item.done { opacity: 0.55; background: rgba(16, 185, 129, 0.03); }
-        .unit-item h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 2px; line-height: 1.2; }
-        .unit-item p { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
-        .check-icon { color: var(--success); font-weight: bold; font-size: 1.1rem; }
-        .delete-btn { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; border-radius: 8px; padding: 6px 10px; font-weight: bold; cursor: pointer; font-size: 0.8rem; }
-        
-        .progress-bar-container { width: 100%; background: rgba(255,255,255,0.1); height: 8px; border-radius: 4px; overflow: hidden; margin-top: 4px; }
-        .progress-bar { height: 100%; background: var(--success); transition: width 0.4s ease; width: 0%; }
-
+        /* Layout Elements */
         .app-tab { display: none; flex-direction: column; gap: 16px; }
         .app-tab.active { display: flex; }
+        .section-title { font-size: 1.1rem; font-weight: 800; color: var(--text); margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; }
         
-        .workspace-layout { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        /* Lists & Task Cards */
+        .task-list { display: flex; flex-direction: column; gap: 10px; }
+        .task-card { background: var(--card); border: 1px solid var(--border); padding: 16px; border-radius: 16px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: transform 0.1s; }
+        .task-card:active { transform: scale(0.98); }
+        .task-card.completed { opacity: 0.6; background: var(--bg); text-decoration: line-through; color: var(--text-muted); }
+        .checkbox-circle { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--border); display: flex; justify-content: center; align-items: center; font-weight: bold; color: transparent; transition: all 0.2s; flex-shrink: 0; }
+        .task-card.completed .checkbox-circle { background: var(--success); border-color: var(--success); color: white; }
+        .task-info { flex: 1; }
+        .task-title { font-size: 1rem; font-weight: 700; }
+        .task-meta-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
+        .task-tag { font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 6px; display: inline-block; }
+        .tag-daily { background: var(--primary-light); color: var(--primary); }
+        .tag-event { background: rgba(245, 158, 11, 0.15); color: #d97706; }
+        .task-time-badge { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); }
 
-        .key-wrapper { display: flex; gap: 8px; margin-bottom: 12px; align-items: center; }
-        .key-input { flex: 1; padding: 11px; border-radius: 10px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); font-size: 0.85rem; }
+        /* Library Section Styles */
+        .library-grid { display: flex; flex-direction: column; gap: 12px; }
+        .lib-card { background: var(--card); border: 1px solid var(--border); padding: 16px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
+        .lib-card:active { transform: scale(0.99); }
+        .lib-title { font-weight: 700; font-size: 1rem; color: var(--text); margin-bottom: 2px; }
+        .lib-meta { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+        .lib-actions { display: flex; gap: 8px; }
+        .lib-btn { background: var(--bg); border: 1px solid var(--border); width: 34px; height: 34px; border-radius: 8px; cursor: pointer; display: flex; justify-content: center; align-items: center; }
 
-        .textarea-input { width: 100%; height: 200px; padding: 14px; border-radius: 14px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); font-size: 0.9rem; resize: vertical; outline: none; margin-bottom: 12px; }
-        .textarea-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
+        /* Full Screen Doc Viewer */
+        .viewer-overlay { position: fixed; inset: 0; background: var(--card); z-index: 100001; display: none; flex-direction: column; }
+        .viewer-header { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 1px solid var(--border); background: var(--bg); }
+        .viewer-content { flex: 1; padding: 24px; overflow-y: auto; line-height: 1.6; }
+        .viewer-content h1, .viewer-content h2 { color: var(--primary); margin: 20px 0 10px 0; }
+        .viewer-content p { margin-bottom: 14px; }
+        .viewer-content ul { margin-left: 20px; margin-bottom: 14px; }
         
-        .btn-group { display: flex; gap: 8px; margin-top: 12px; }
-        .primary-btn { background: var(--primary); color: white; border: none; padding: 14px 20px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; flex: 1; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2); display: flex; justify-content: center; align-items: center; gap: 8px; transition: opacity 0.2s; }
-        .primary-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-        .secondary-btn { background: var(--text-muted); color: white; border: none; padding: 14px 20px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; flex: 1; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); display: none; }
+        /* Stats & Progress */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .stat-box { background: var(--card); border: 1px solid var(--border); padding: 16px; border-radius: 16px; text-align: center; }
+        .stat-value { font-size: 2rem; font-weight: 800; color: var(--primary); }
+        .stat-label { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-top: 4px; }
+        .progress-bar-container { width: 100%; background: var(--border); height: 12px; border-radius: 6px; overflow: hidden; margin-top: 8px; }
+        .progress-bar { height: 100%; background: var(--success); transition: width 0.4s ease; width: 0%; }
+
+        /* Forms & Inputs */
+        .form-group { display: flex; flex-direction: column; gap: 12px; background: var(--card); padding: 16px; border-radius: 16px; border: 1px solid var(--border); }
+        .input-row { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+        @media(min-width: 360px) { .input-row { flex-direction: row; } }
+        .input-field { padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 0.95rem; width: 100%; outline: none; }
+        .input-field:focus { border-color: var(--primary); }
+        .btn { padding: 12px 20px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; text-align: center; white-space: nowrap; width: 100%; transition: background 0.2s; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text); }
+        .btn-warning { background: var(--warning); color: white; }
         
-        .sandbox-mount-frame { border-radius: 16px; border: 1px solid var(--border); background: var(--card); overflow: hidden; display: none; min-height: 500px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); position: relative; flex-direction: column; }
-        .sandbox-header-bar { background: var(--bg); padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .sandbox-title-text { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-        .fullscreen-btn { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-        .fullscreen-btn:hover { background: var(--primary-light); color: var(--primary); }
-        .sandbox-iframe { width: 100%; height: 550px; border: none; background: transparent; display: block; flex: 1; }
+        .day-picker { display: flex; justify-content: space-between; gap: 4px; margin-top: 4px; }
+        .day-btn { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: var(--bg); color: var(--text-muted); font-size: 0.85rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .day-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-        .sandbox-mount-frame.is-fullscreen { position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; z-index: 99999 !important; border-radius: 0 !important; margin-top: 0 !important; }
-        .sandbox-mount-frame.is-fullscreen .sandbox-iframe { height: calc(100vh - 45px) !important; background: #ffffff !important; }
+        .edit-list-item { display: flex; justify-content: space-between; align-items: center; background: var(--card); border: 1px solid var(--border); padding: 12px; border-radius: 12px; margin-bottom: 8px; }
+        .delete-btn { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; padding: 6px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-        /* Fullscreen Library Viewer Overlay */
-        .library-viewer { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg); z-index: 100000; flex-direction: column; }
-        .library-viewer.active { display: flex; }
-        .lib-header { padding: 16px; background: var(--card); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .lib-header h3 { font-size: 1.1rem; color: var(--text); }
-        .close-lib-btn { background: var(--border); color: var(--text); border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .lib-iframe { flex: 1; width: 100%; border: none; background: #ffffff; }
-
-        .desktop-navbar { display: none; gap: 8px; }
-        .desktop-nav-item { background: var(--card); border: 1px solid var(--border); padding: 8px 16px; border-radius: 10px; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 6px; }
-        .desktop-nav-item.active { background: var(--primary); border-color: var(--primary); color: white; }
-
-        .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 64px; background: var(--card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 999; box-shadow: 0 -4px 10px rgba(0,0,0,0.03); }
+        /* Navigation */
+        .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 64px; background: var(--card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 999; }
         .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: var(--text-muted); cursor: pointer; font-size: 0.7rem; font-weight: 700; width: 25%; height: 100%; }
         .nav-item span { font-size: 1.3rem; }
         .nav-item.active { color: var(--primary); }
-
-        #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 10px; padding: 16px; position: fixed; z-index: 100000; left: 50%; bottom: 80px; transform: translateX(-50%); font-size: 0.9rem; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
-        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 80px; opacity: 1;} }
-        @keyframes fadeout { from {bottom: 80px; opacity: 1;} to {bottom: 0; opacity: 0;} }
-
-        @media(min-width: 768px) {
-            body { padding: 24px; }
-            .bottom-nav { display: none; }
-            .desktop-navbar { display: flex; }
-            .tracker-split-grid { grid-template-columns: 1fr 1fr; align-items: start; }
-            .workspace-layout { grid-template-columns: 420px 1fr; align-items: start; }
-            .textarea-input { height: 280px; }
-            .sandbox-iframe { height: 620px; }
-        }
     </style>
 </head>
 <body>
 
-    <div class="app-container">
+    <div class="lock-screen" id="lockScreen">
+        <img src="https://cdn-icons-png.flaticon.com/512/2693/2693507.png" class="lock-logo" alt="LifeSync">
+        <div class="lock-title">LifeSync</div>
+        <div class="lock-subtitle" id="lockSubtitle">Authenticating...</div>
+
+        <div id="bioView">
+            <div class="bio-pulse-icon" onclick="triggerBiometrics()">🖐️</div>
+            <button class="switch-lock-btn" onclick="showPinPad()">
+                <span>⌨️</span> Use Keypad
+            </button>
+        </div>
+
+        <div id="pinView">
+            <div class="pin-dots" id="pinDots">
+                <div class="pin-dot"></div>
+                <div class="pin-dot"></div>
+                <div class="pin-dot"></div>
+                <div class="pin-dot"></div>
+            </div>
+
+            <div class="numpad">
+                <button class="num-btn" onclick="pressPin(1)">1</button>
+                <button class="num-btn" onclick="pressPin(2)">2</button>
+                <button class="num-btn" onclick="pressPin(3)">3</button>
+                <button class="num-btn" onclick="pressPin(4)">4</button>
+                <button class="num-btn" onclick="pressPin(5)">5</button>
+                <button class="num-btn" onclick="pressPin(6)">6</button>
+                <button class="num-btn" onclick="pressPin(7)">7</button>
+                <button class="num-btn" onclick="pressPin(8)">8</button>
+                <button class="num-btn" onclick="pressPin(9)">9</button>
+                <button class="num-btn action-num-btn" onclick="clearPin()">Clear</button>
+                <button class="num-btn" onclick="pressPin(0)">0</button>
+                <button class="num-btn action-num-btn" onclick="deletePin()">Del</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container" id="mainApp">
         <div class="brand-header">
             <div class="logo-group">
-                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135810.png" class="logo-img" alt="logo">
-                <span class="brand-name">StudySync Workspace</span>
+                <img src="https://cdn-icons-png.flaticon.com/512/2693/2693507.png" class="logo-img" alt="logo">
+                <span class="brand-name">LifeSync</span>
             </div>
-            <div class="header-controls">
-                <div class="desktop-navbar">
-                    <div class="desktop-nav-item active" id="desk-nav-tracker" onclick="switchActiveTab('tracker')">🏠 Tracker</div>
-                    <div class="desktop-nav-item" id="desk-nav-notes" onclick="switchActiveTab('notes')">📝 Note Canvas</div>
-                    <div class="desktop-nav-item" id="desk-nav-quiz" onclick="switchActiveTab('quiz')">❓ Quiz Engine</div>
-                    <div class="desktop-nav-item" id="desk-nav-library" onclick="switchActiveTab('library')">📚 Library</div>
-                </div>
+            <div style="display: flex; gap: 8px;">
+                <button class="theme-toggle" onclick="lockApp()" style="font-size:0.9rem;">🔒</button>
                 <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()">🌙</button>
             </div>
         </div>
 
-        <div class="widget-banner">
-            <div class="widget-row">
-                <div class="widget-stat">
-                    <span class="widget-number" id="widgetDays">57</span>
-                    <span class="widget-label">Days Remaining</span>
+        <div id="tab-today" class="app-tab active">
+            <div class="greeting-card">
+                <div class="greeting-time" id="dateDisplay">Monday, Jan 1</div>
+                <div class="greeting-text" id="greetingDisplay">Good Morning!</div>
+                <div class="greeting-sub" id="statusDisplay">You have 0 tasks left today.</div>
+            </div>
+
+            <div>
+                <h3 class="section-title">Up Next</h3>
+                <div class="task-list" id="pendingTasksList"></div>
+            </div>
+
+            <div style="margin-top: 16px;">
+                <h3 class="section-title" style="color: var(--text-muted);">Completed</h3>
+                <div class="task-list" id="completedTasksList"></div>
+            </div>
+        </div>
+
+        <div id="tab-library" class="app-tab">
+            <div class="form-group" style="background: var(--secondary-light); border-color: rgba(79, 70, 229, 0.2);">
+                <h3 style="color: var(--secondary);">📚 AI Study Importer</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">Upload custom HTML study guides, cheatsheets, or quizzes created by external AIs directly into your app.</p>
+                
+                <button class="btn btn-primary" style="background: var(--secondary);" onclick="triggerHtmlImport()">
+                    ➕ Import HTML Module
+                </button>
+                <input type="file" id="htmlFileImport" accept=".html" style="display: none;" onchange="importHtmlModule(event)">
+            </div>
+
+            <div>
+                <h3 class="section-title">Your Study Modules</h3>
+                <div class="library-grid" id="libraryList">
+                    </div>
+            </div>
+        </div>
+
+        <div id="tab-progress" class="app-tab">
+            <h3 class="section-title">Your Consistency</h3>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value" id="streakDisplay">0</div>
+                    <div class="stat-label">Day Streak 🔥</div>
                 </div>
-                <div class="widget-stat" style="text-align: right;">
-                    <span class="widget-number" id="widgetCompleted">0/57</span>
-                    <span class="widget-label">Modules Logged</span>
+                <div class="stat-box">
+                    <div class="stat-value" id="totalDoneDisplay">0</div>
+                    <div class="stat-label">Total Tasks Done ✔️</div>
                 </div>
             </div>
-            <div>
-                <div class="widget-row" style="margin-bottom: 2px;">
-                    <span class="widget-label" style="color: #ffffff; font-size: 0.7rem;">Syllabus Completion Index</span>
-                    <span class="widget-label" id="widgetPercent" style="color: var(--success);">0%</span>
+
+            <div class="card" style="margin-top: 12px;">
+                <h4 style="margin-bottom: 8px;">Today's Completion</h4>
+                <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 0.9rem;">
+                    <span id="progressRatio">0 / 0 Tasks</span>
+                    <span id="progressPercent" style="color: var(--success);">0%</span>
                 </div>
                 <div class="progress-bar-container">
                     <div class="progress-bar" id="progressBar"></div>
@@ -204,575 +264,606 @@
             </div>
         </div>
 
-        <div id="tab-tracker" class="app-tab active">
-            <div class="tracker-split-grid">
-                <div class="card target-card" id="todayTarget"></div>
-
-                <div class="lists-wrapper">
-                    <div class="list-section">
-                        <h3 class="list-header">Syllabus Up Next <span class="count-tag" id="upcomingCount">0</span></h3>
-                        <div class="scroll-container" id="upcomingList"></div>
-                    </div>
-                    <div class="list-section">
-                        <h3 class="list-header">Completed Items <span class="count-tag" id="completedCount" style="background-color:rgba(16,185,129,0.15); color:var(--success);">0</span></h3>
-                        <div class="scroll-container" id="completedList"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="tab-notes" class="app-tab">
-            <div class="workspace-layout">
-                <div class="card">
-                    <h3 style="margin-bottom: 4px; font-weight: 800;">📝 Note AI Render Engine</h3>
-                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Transforms messy textbook copy into styled responsive HTML assets.</p>
-                    
-                    <div class="key-wrapper">
-                        <input type="password" class="key-input" id="noteApiKey" placeholder="Paste Gemini API Key..." onchange="saveApiKeys(this.value)">
-                    </div>
-
-                    <textarea class="textarea-input" id="noteRawInput" placeholder="Paste notes or texts here..."></textarea>
-                    
-                    <div class="btn-group">
-                        <button class="primary-btn" id="noteGenBtn" onclick="requestAiRender('note')">✨ Render Layout</button>
-                        <button class="secondary-btn" id="noteSaveBtn" onclick="saveToLibrary('note')">💾 Save Note</button>
-                    </div>
+        <div id="tab-plan" class="app-tab">
+            <div class="form-group">
+                <h3>📌 Recurring Habits</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">Tasks that repeat on specific days.</p>
+                <div class="input-row">
+                    <input type="text" id="newHabitInput" class="input-field" placeholder="e.g. Church, Gym...">
+                    <input type="time" id="newHabitTime" class="input-field" style="max-width: 130px;">
                 </div>
                 
-                <div class="sandbox-mount-frame" id="noteSandboxFrame">
-                    <div class="sandbox-header-bar">
-                        <span class="sandbox-title-text">✨ Live Render Viewport</span>
-                        <button class="fullscreen-btn" onclick="toggleFullscreenContainer('noteSandboxFrame')">🖥️ Fullscreen</button>
-                    </div>
-                    <iframe class="sandbox-iframe" id="noteIframe"></iframe>
-                </div>
-            </div>
-        </div>
-
-        <div id="tab-quiz" class="app-tab">
-            <div class="workspace-layout">
-                <div class="card">
-                    <h3 style="margin-bottom: 4px; font-weight: 800;">📋 AI Interactive Quiz Generator</h3>
-                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Gemini turns raw questions + answer keys into a live playable test.</p>
-                    
-                    <div class="key-wrapper">
-                        <input type="password" class="key-input" id="quizApiKey" placeholder="Paste Gemini API Key..." onchange="saveApiKeys(this.value)">
-                    </div>
-
-                    <textarea class="textarea-input" id="quizRawInput" placeholder="Paste questions + answer keys here..."></textarea>
-                    
-                    <div class="btn-group">
-                        <button class="primary-btn" id="quizGenBtn" style="background: var(--success);" onclick="requestAiRender('quiz')">🚀 Build Quiz UI</button>
-                        <button class="secondary-btn" id="quizSaveBtn" onclick="saveToLibrary('quiz')">💾 Save Quiz</button>
-                    </div>
+                <div class="day-picker" id="newHabitDays">
+                    <div class="day-btn active" data-day="0" onclick="toggleDayPicker(this)">S</div>
+                    <div class="day-btn active" data-day="1" onclick="toggleDayPicker(this)">M</div>
+                    <div class="day-btn active" data-day="2" onclick="toggleDayPicker(this)">T</div>
+                    <div class="day-btn active" data-day="3" onclick="toggleDayPicker(this)">W</div>
+                    <div class="day-btn active" data-day="4" onclick="toggleDayPicker(this)">T</div>
+                    <div class="day-btn active" data-day="5" onclick="toggleDayPicker(this)">F</div>
+                    <div class="day-btn active" data-day="6" onclick="toggleDayPicker(this)">S</div>
                 </div>
                 
-                <div class="sandbox-mount-frame" id="quizSandboxFrame">
-                    <div class="sandbox-header-bar">
-                        <span class="sandbox-title-text">📋 Live Test Terminal</span>
-                        <button class="fullscreen-btn" onclick="toggleFullscreenContainer('quizSandboxFrame')">🖥️ Fullscreen</button>
-                    </div>
-                    <iframe class="sandbox-iframe" id="quizIframe"></iframe>
-                </div>
+                <button class="btn btn-primary" style="margin-top: 4px;" onclick="addHabit()">Add Habit</button>
+                <div id="editHabitsList" style="margin-top: 12px;"></div>
             </div>
-        </div>
 
-        <div id="tab-library" class="app-tab">
-            <div class="card" style="margin-bottom: 16px;">
-                <h3 style="margin-bottom: 4px; font-weight: 800;">📚 Offline Database Vault</h3>
-                <p style="font-size: 0.75rem; color: var(--text-muted);">Saved notes and quizzes are permanently stored in your device's internal App Database (IndexedDB) for robust offline access.</p>
+            <div class="form-group" style="margin-top: 8px;">
+                <h3>📅 One-Time Events</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">Specific things for specific dates.</p>
+                <input type="text" id="newEventTitle" class="input-field" placeholder="Event/Task Title">
+                <div class="input-row">
+                    <input type="date" id="newEventDate" class="input-field">
+                    <input type="time" id="newEventTime" class="input-field" style="max-width: 130px;">
+                </div>
+                <button class="btn btn-primary" onclick="addEvent()">Schedule Task</button>
+                
+                <h4 style="margin-top: 16px; font-size: 0.9rem;">Upcoming Events:</h4>
+                <div id="editEventsList" style="margin-top: 8px;"></div>
+            </div>
+
+            <div class="form-group" style="margin-top: 8px;">
+                <h3>💾 Data Vault</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">This bundles your entire database, habit history, and all imported HTML study guides into one single backup file.</p>
+                <div class="input-row">
+                    <button class="btn btn-warning" onclick="exportMasterBackup()">⬇️ Export Master Backup</button>
+                    <button class="btn btn-outline" onclick="triggerMasterImport()">⬆️ Import Master Backup</button>
+                </div>
+                <input type="file" id="masterBackupFile" accept=".json" style="display: none;" onchange="importMasterBackup(event)">
             </div>
             
-            <div class="tracker-split-grid">
-                <div class="list-section">
-                    <h3 class="list-header">📝 Saved Notes</h3>
-                    <div class="scroll-container" id="savedNotesList" style="max-height: 400px;"></div>
-                </div>
-                <div class="list-section">
-                    <h3 class="list-header">❓ Saved Quizzes</h3>
-                    <div class="scroll-container" id="savedQuizzesList" style="max-height: 400px;"></div>
-                </div>
+            <div class="form-group" style="margin-top: 8px; align-items: center; text-align: center;">
+                <h4 style="font-size: 0.9rem;">Security Settings</h4>
+                <button class="btn btn-primary" style="background: var(--text);" onclick="enrollBiometrics()">Register Device Fingerprint / FaceID</button>
             </div>
         </div>
-
-        <div class="library-viewer" id="libraryViewerOverlay">
-            <div class="lib-header">
-                <h3 id="libViewerTitle">Document Title</h3>
-                <button class="close-lib-btn" onclick="closeLibraryViewer()">✕ Close</button>
-            </div>
-            <iframe class="lib-iframe" id="libViewerIframe"></iframe>
-        </div>
-
-        <div id="toast">Alert!</div>
 
         <nav class="bottom-nav">
-            <div class="nav-item active" id="btn-nav-tracker" onclick="switchActiveTab('tracker')">
-                <span>🏠</span>Track
+            <div class="nav-item active" id="btn-nav-today" onclick="switchTab('today')">
+                <span>🎯</span>Today
             </div>
-            <div class="nav-item" id="btn-nav-notes" onclick="switchActiveTab('notes')">
-                <span>📝</span>Notes
+            <div class="nav-item" id="btn-nav-library" onclick="switchTab('library')">
+                <span>📚</span>Library
             </div>
-            <div class="nav-item" id="btn-nav-quiz" onclick="switchActiveTab('quiz')">
-                <span>❓</span>Quiz
+            <div class="nav-item" id="btn-nav-progress" onclick="switchTab('progress')">
+                <span>📈</span>Progress
             </div>
-            <div class="nav-item" id="btn-nav-library" onclick="switchActiveTab('library')">
-                <span>📚</span>Vault
+            <div class="nav-item" id="btn-nav-plan" onclick="switchTab('plan')">
+                <span>⚙️</span>Plan
             </div>
         </nav>
     </div>
 
+    <div class="viewer-overlay" id="documentViewer">
+        <div class="viewer-header">
+            <button class="btn btn-outline" onclick="closeViewer()" style="width: auto; padding: 8px 16px;">⬅ Back</button>
+            <div id="viewerTitle" style="font-weight: bold; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Document</div>
+            <div></div>
+        </div>
+        <div class="viewer-content" id="viewerBody">
+            </div>
+    </div>
+
     <script>
-        const curriculumData = [
-            // === MATH ===
-            { subject: "Math", grade: 9, title: "Unit 1: Further on Sets" },
-            { subject: "Math", grade: 9, title: "Unit 2: The Number System" },
-            { subject: "Math", grade: 9, title: "Unit 3: Solving Equations" },
-            { subject: "Math", grade: 9, title: "Unit 4: Solving Inequalities" },
-            { subject: "Math", grade: 9, title: "Unit 5: Introduction to Trigonometry" },
-            { subject: "Math", grade: 9, title: "Unit 6: Regular Polygons" },
-            { subject: "Math", grade: 9, title: "Unit 7: Congruency and Similarity" },
-            { subject: "Math", grade: 9, title: "Unit 8: Vectors in Two Dimensions" },
-            { subject: "Math", grade: 9, title: "Unit 9: Statistics and Probability" },
-            { subject: "Math", grade: 10, title: "Unit 1: Relations and Functions" },
-            { subject: "Math", grade: 10, title: "Unit 2: Polynomial Functions" },
-            { subject: "Math", grade: 10, title: "Unit 3: Exponential and Logarithmic Functions" },
-            { subject: "Math", grade: 10, title: "Unit 4: Trigonometric Functions" },
-            { subject: "Math", grade: 10, title: "Unit 5: Circles" },
-            { subject: "Math", grade: 10, title: "Unit 6: Solid Figures" },
-            { subject: "Math", grade: 10, title: "Unit 7: Coordinate Geometry" },
-            { subject: "Math", grade: 11, title: "Unit 1: Relations and Functions" },
-            { subject: "Math", grade: 11, title: "Unit 2: Rational Expressions and Rational Functions" },
-            { subject: "Math", grade: 11, title: "Unit 3: Matrices" },
-            { subject: "Math", grade: 11, title: "Unit 4: Determinants and Their Properties" },
-            { subject: "Math", grade: 11, title: "Unit 5: Vectors" },
-            { subject: "Math", grade: 11, title: "Unit 6: Transformations of the Plane" },
-            { subject: "Math", grade: 11, title: "Unit 7: Statistics" },
-            { subject: "Math", grade: 11, title: "Unit 8: Probability" },
+        // ================= MASTER LIFE CYCLE DATABASE =================
+        let habits = JSON.parse(localStorage.getItem('lifesync_habits')) || [];
+        let events = JSON.parse(localStorage.getItem('lifesync_events')) || [];
+        let history = JSON.parse(localStorage.getItem('lifesync_history')) || {};
+        let library = JSON.parse(localStorage.getItem('lifesync_library')) || []; // HTML modules array
 
-            // === PHYSICS ===
-            { subject: "Physics", grade: 9, title: "Unit 1: Physics and Human Society" },
-            { subject: "Physics", grade: 9, title: "Unit 2: Physical Quantities" },
-            { subject: "Physics", grade: 9, title: "Unit 3: Motion in a Straight Line" },
-            { subject: "Physics", grade: 9, title: "Unit 4: Force, Work, Energy and Power" },
-            { subject: "Physics", grade: 9, title: "Unit 5: Simple Machines" },
-            { subject: "Physics", grade: 9, title: "Unit 6: Mechanical Oscillation and Sound Wave" },
-            { subject: "Physics", grade: 9, title: "Unit 7: Temperature and Thermometry" },
-            { subject: "Physics", grade: 10, title: "Unit 1: Vector Quantities" },
-            { subject: "Physics", grade: 10, title: "Unit 2: Uniformly Accelerated Motion" },
-            { subject: "Physics", grade: 10, title: "Unit 3: Elasticity and Static Equilibrium of Rigid Body" },
-            { subject: "Physics", grade: 10, title: "Unit 4: Static and Current Electricity" },
-            { subject: "Physics", grade: 10, title: "Unit 5: Magnetism" },
-            { subject: "Physics", grade: 10, title: "Unit 6: Electromagnetic Waves and Geometrical Optics" },
-            { subject: "Physics", grade: 11, title: "Unit 1: Physics and Human Society" },
-            { subject: "Physics", grade: 11, title: "Unit 2: Vectors" },
-            { subject: "Physics", grade: 11, title: "Unit 3: Motion in One and Two Dimensions" },
-            { subject: "Physics", grade: 11, title: "Unit 4: Dynamics" },
-            { subject: "Physics", grade: 11, title: "Unit 5: Heat Conduction and Calorimetry" },
-            { subject: "Physics", grade: 11, title: "Unit 6: Electrostatics and Electric Circuit" },
-            { subject: "Physics", grade: 11, title: "Unit 7: Nuclear Physics" },
-
-            // === CHEMISTRY ===
-            { subject: "Chemistry", grade: 9, title: "Unit 1: Chemistry and Its Importance" },
-            { subject: "Chemistry", grade: 9, title: "Unit 2: Measurements and Scientific Methods" },
-            { subject: "Chemistry", grade: 9, title: "Unit 3: Structure of the Atom" },
-            { subject: "Chemistry", grade: 9, title: "Unit 4: Periodic Classification of Elements" },
-            { subject: "Chemistry", grade: 9, title: "Unit 5: Chemical Bonding" },
-            { subject: "Chemistry", grade: 10, title: "Unit 1: Chemical Reactions and Stoichiometry" },
-            { subject: "Chemistry", grade: 10, title: "Unit 2: Solutions" },
-            { subject: "Chemistry", grade: 10, title: "Unit 3: Important Inorganic Compounds" },
-            { subject: "Chemistry", grade: 10, title: "Unit 4: Energy Changes and Electrochemistry" },
-            { subject: "Chemistry", grade: 10, title: "Unit 5: Metals and Nonmetals" },
-            { subject: "Chemistry", grade: 10, title: "Unit 6: Hydrocarbons and Their Natural Sources" },
-            { subject: "Chemistry", grade: 11, title: "Unit 1: Atomic Structure and Periodic Properties of the Elements" },
-            { subject: "Chemistry", grade: 11, title: "Unit 2: Chemical Bonding" },
-            { subject: "Chemistry", grade: 11, title: "Unit 3: Physical States of Matter" },
-            { subject: "Chemistry", grade: 11, title: "Unit 4: Chemical Kinetics" },
-            { subject: "Chemistry", grade: 11, title: "Unit 5: Chemical Equilibrium" },
-            { subject: "Chemistry", grade: 11, title: "Unit 6: Some Important Oxygen-Containing Organic Compounds" },
-
-            // === BIOLOGY ===
-            { subject: "Biology", grade: 9, title: "Unit 1: Introduction to Biology" },
-            { subject: "Biology", grade: 9, title: "Unit 2: Characteristics and Classification of Organisms" },
-            { subject: "Biology", grade: 9, title: "Unit 3: Cells" },
-            { subject: "Biology", grade: 9, title: "Unit 4: Reproduction" },
-            { subject: "Biology", grade: 9, title: "Unit 5: Human Health, Nutrition and Diseases" },
-            { subject: "Biology", grade: 9, title: "Unit 6: Ecology" },
-            { subject: "Biology", grade: 10, title: "Unit 1: Sub-Fields of Biology" },
-            { subject: "Biology", grade: 10, title: "Unit 2: Plants" },
-            { subject: "Biology", grade: 10, title: "Unit 3: Biochemical Molecules" },
-            { subject: "Biology", grade: 10, title: "Unit 4: Cell Division" },
-            { subject: "Biology", grade: 10, title: "Unit 5: Human Biology" },
-            { subject: "Biology", grade: 10, title: "Unit 6: Ecological Interactions" },
-            { subject: "Biology", grade: 11, title: "Unit One: Biology and Technology" },
-            { subject: "Biology", grade: 11, title: "Unit Two: Animals" },
-            { subject: "Biology", grade: 11, title: "Unit Three: Enzymes" },
-            { subject: "Biology", grade: 11, title: "Unit Four: Genetics" },
-            { subject: "Biology", grade: 11, title: "Unit Five: The Human Body Systems" },
-            { subject: "Biology", grade: 11, title: "Unit Six: Population and Natural Resources" }
-        ];
-
-        let currentIndex = parseInt(localStorage.getItem('studysync_index_finalv2')) || 0;
-        
-        // Temporarily store generated HTML in RAM before saving to DB
-        let currentGeneratedNote = "";
-        let currentGeneratedQuiz = "";
-
-        // API Key Init
-        const savedKey = localStorage.getItem('studysync_gemini_key') || '';
-        document.getElementById('noteApiKey').value = savedKey;
-        document.getElementById('quizApiKey').value = savedKey;
-        function saveApiKeys(val) {
-            localStorage.setItem('studysync_gemini_key', val.trim());
-            document.getElementById('noteApiKey').value = val.trim();
-            document.getElementById('quizApiKey').value = val.trim();
+        function saveData() {
+            localStorage.setItem('lifesync_habits', JSON.stringify(habits));
+            localStorage.setItem('lifesync_events', JSON.stringify(events));
+            localStorage.setItem('lifesync_history', JSON.stringify(history));
+            localStorage.setItem('lifesync_library', JSON.stringify(library));
         }
 
-        // Theme
-        if (localStorage.getItem('studysync_theme') === 'dark') {
-            document.body.classList.add('dark');
-            document.getElementById('themeToggleBtn').innerText = "☀️";
-        }
-        function toggleTheme() {
-            if (document.body.classList.contains('dark')) {
-                document.body.classList.remove('dark');
-                document.getElementById('themeToggleBtn').innerText = "🌙";
-                localStorage.setItem('studysync_theme', 'light');
-            } else {
-                document.body.classList.add('dark');
-                document.getElementById('themeToggleBtn').innerText = "☀️";
-                localStorage.setItem('studysync_theme', 'dark');
-            }
-        }
-
-        function switchActiveTab(tabName) {
-            document.querySelectorAll('.app-tab').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.desktop-nav-item').forEach(el => el.classList.remove('active'));
+        // ================= MASTER BACKUP ENGINE (ALL DATA INSIDE ONE JSON) =================
+        function exportMasterBackup() {
+            const masterData = {
+                habits,
+                events,
+                history,
+                library,
+                backupVersion: "2.0"
+            };
             
-            document.getElementById(`tab-${tabName}`).classList.add('active');
+            const jsonString = JSON.stringify(masterData, null, 2);
+            const blob = new Blob([jsonString], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
             
-            const mobileBtn = document.getElementById(`btn-nav-${tabName}`);
-            if(mobileBtn) mobileBtn.classList.add('active');
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `lifesync_master_backup_${Date.now()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
             
-            const deskBtn = document.getElementById(`desk-nav-${tabName}`);
-            if(deskBtn) deskBtn.classList.add('active');
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            alert("✅ Master Backup successfully downloaded! This file secures all habits, history, and imported HTML notes.");
         }
 
-        function markComplete() {
-            if (currentIndex < curriculumData.length) {
-                currentIndex++;
-                localStorage.setItem('studysync_index_finalv2', currentIndex);
-                renderApp();
-            }
+        function triggerMasterImport() {
+            document.getElementById('masterBackupFile').click();
         }
 
-        window.copyPrompt = function(type, subject, grade, title) {
-            let promptText = "";
-            const context = `Grade ${grade} ${subject} - ${title}`;
+        function importMasterBackup(event) {
+            const file = event.target.files[0];
+            if (!file) return;
 
-            if (type === 'note') {
-                promptText = `Act as an expert high school tutor. Please provide a comprehensive, highly structured set of study notes based on the uploaded documents for: ${context}. Include definitions for core concepts, bullet points for key theories, data tables comparing metrics if available, and practical examples to make it easy to understand.`;
-            } else if (type === 'flashcard') {
-                promptText = `Based on the uploaded documents for ${context}, generate a complete set of flashcards. Cover every important concept, formula, and vocabulary word. Format exactly like this for easy copying:\n\nFront: [Question/Term]\nBack: [Answer/Definition]`;
-            } else if (type === 'quiz') {
-                promptText = `Act as a teacher. Create a 10-question multiple-choice quiz covering all the crucial material from the uploaded documents for ${context}. Provide 4 options (A, B, C, D) for each. At the very bottom, provide an Answer Key matching exactly this layout format (1. A, 2. B, 3. C) with a brief explanation.`;
-            } else if (type === 'terms') {
-                promptText = `Scan the uploaded documents for ${context} and extract every single important vocabulary term, concept, and law/theorem. Do not skip any crucial terms. Present them as a clear, easy-to-read glossary with the term bolded followed by its precise definition.`;
-            } else if (type === 'video') {
-                promptText = `Act as an engaging, highly visual educational YouTuber like CrashCourse. Write a brief explanation script or a list of highly visual analogies to explain the hardest core concepts of ${context} to a high schooler. Make it memorable, fun, and easy to visualize.`;
-            } else if (type === 'questions') {
-                promptText = `Scan the uploaded textbook documents for ${context} and extract or generate multiple choice review questions. List them with standard options A, B, C, D. At the end of the text, write an Answer Key matching the questions.`;
-            }
-
-            navigator.clipboard.writeText(promptText).then(() => {
-                showToast(`✅ ${type.charAt(0).toUpperCase() + type.slice(1)} prompt copied! Paste in NotebookLM.`);
-            }).catch(err => console.error('Failed to copy text: ', err));
-        };
-
-        function showToast(message) {
-            const toast = document.getElementById("toast");
-            toast.innerText = message;
-            toast.className = "show";
-            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
-        }
-
-        function toggleFullscreenContainer(frameId) {
-            const element = document.getElementById(frameId);
-            if (!element) return;
-            if (element.requestFullscreen) {
-                if (!document.fullscreenElement) {
-                    element.requestFullscreen().catch(err => element.classList.toggle('is-fullscreen'));
-                } else {
-                    document.exitFullscreen();
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const backup = JSON.parse(e.target.result);
+                    
+                    if (backup.habits) habits = backup.habits;
+                    if (backup.events) events = backup.events;
+                    if (backup.history) history = backup.history;
+                    if (backup.library) library = backup.library;
+                    
+                    saveData();
+                    
+                    // Render everything instantly
+                    renderAgenda();
+                    renderStats();
+                    renderLibrary();
+                    renderPlanner();
+                    
+                    alert("🎉 Success! Your complete database, including all habits and HTML modules, is fully restored.");
+                } catch (err) {
+                    alert("❌ Invalid backup configuration.");
+                    console.error(err);
                 }
-            } else {
-                element.classList.toggle('is-fullscreen');
-            }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
         }
 
-        document.addEventListener('fullscreenchange', () => {
-            if (!document.fullscreenElement) {
-                document.querySelectorAll('.sandbox-mount-frame').forEach(el => el.classList.remove('is-fullscreen'));
-            }
-        });
+        // ================= HTML LIBRARY SYSTEM =================
+        function triggerHtmlImport() {
+            document.getElementById('htmlFileImport').click();
+        }
 
-        // ================= ROBUST IndexedDB OFFLINE VAULT =================
-        const DB_NAME = 'StudySyncVault';
-        let db;
+        function importHtmlModule(event) {
+            const file = event.target.files[0];
+            if (!file) return;
 
-        const request = indexedDB.open(DB_NAME, 1);
-        request.onupgradeneeded = (e) => {
-            db = e.target.result;
-            db.createObjectStore("library", { keyPath: "id" });
-        };
-        request.onsuccess = (e) => {
-            db = e.target.result;
-            loadLibrary();
-        };
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const rawHtmlContent = e.target.result;
+                const docTitle = file.name.replace('.html', '').replace(/[-_]/g, ' ');
+                
+                const newModule = {
+                    id: 'doc_' + Date.now(),
+                    title: docTitle.charAt(0).toUpperCase() + docTitle.slice(1),
+                    content: rawHtmlContent,
+                    dateAdded: Date.now()
+                };
 
-        function saveToLibrary(type) {
-            const htmlContent = type === 'note' ? currentGeneratedNote : currentGeneratedQuiz;
-            if(!htmlContent) {
-                showToast("No generated content to save yet!");
+                library.push(newModule);
+                saveData();
+                renderLibrary();
+                alert(`📚 Imported: "${newModule.title}"`);
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function renderLibrary() {
+            const list = document.getElementById('libraryList');
+            list.innerHTML = '';
+
+            if (library.length === 0) {
+                list.innerHTML = `<p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; padding: 24px;">No study modules imported. Generate notes with an AI and import them here!</p>`;
                 return;
             }
 
-            // Bind it to the current lesson tracking state
-            let currentUnitTitle = "Custom AI Import";
-            if (currentIndex < curriculumData.length) {
-                const u = curriculumData[currentIndex];
-                currentUnitTitle = `G${u.grade} ${u.subject}: ${u.title}`;
-            }
-
-            const item = {
-                id: Date.now(),
-                type: type,
-                title: currentUnitTitle,
-                content: htmlContent,
-                date: new Date().toLocaleDateString()
-            };
-
-            const tx = db.transaction("library", "readwrite");
-            tx.objectStore("library").add(item);
-            tx.oncomplete = () => {
-                showToast(`💾 Saved to your Offline Vault!`);
-                
-                // Hide save buttons after successful lock
-                if(type === 'note') document.getElementById('noteSaveBtn').style.display = 'none';
-                if(type === 'quiz') document.getElementById('quizSaveBtn').style.display = 'none';
-                
-                loadLibrary(); // refresh UI lists
-            };
-        }
-
-        function deleteFromLibrary(id) {
-            if(!confirm("Delete this from your vault permanently?")) return;
-            const tx = db.transaction("library", "readwrite");
-            tx.objectStore("library").delete(id);
-            tx.oncomplete = () => {
-                showToast("🗑️ Item deleted.");
-                loadLibrary();
-            };
-        }
-
-        function openLibraryViewer(id) {
-            const tx = db.transaction("library", "readonly");
-            const request = tx.objectStore("library").get(id);
-            request.onsuccess = (e) => {
-                const data = e.target.result;
-                if(data) {
-                    document.getElementById('libViewerTitle').innerText = data.title;
-                    document.getElementById('libViewerIframe').srcdoc = data.content;
-                    document.getElementById('libraryViewerOverlay').classList.add('active');
-                }
-            };
-        }
-
-        function closeLibraryViewer() {
-            document.getElementById('libraryViewerOverlay').classList.remove('active');
-            document.getElementById('libViewerIframe').srcdoc = ""; // Clear memory
-        }
-
-        function loadLibrary() {
-            if(!db) return;
-            const notesList = document.getElementById('savedNotesList');
-            const quizzesList = document.getElementById('savedQuizzesList');
-            notesList.innerHTML = "";
-            quizzesList.innerHTML = "";
-
-            const tx = db.transaction("library", "readonly");
-            const store = tx.objectStore("library");
-            const request = store.openCursor(null, "prev"); // newest first
-
-            request.onsuccess = (e) => {
-                const cursor = e.target.result;
-                if(cursor) {
-                    const item = cursor.value;
-                    const layout = `
-                        <div class="unit-item">
-                            <div style="flex:1;" onclick="openLibraryViewer(${item.id})">
-                                <h4>${item.title}</h4>
-                                <p>Saved: ${item.date}</p>
-                            </div>
-                            <button class="delete-btn" onclick="deleteFromLibrary(${item.id})">✕</button>
-                        </div>
-                    `;
-
-                    if(item.type === 'note') notesList.insertAdjacentHTML('beforeend', layout);
-                    else if(item.type === 'quiz') quizzesList.insertAdjacentHTML('beforeend', layout);
-                    
-                    cursor.continue();
-                } else {
-                    if(notesList.innerHTML === "") notesList.innerHTML = "<p style='color:var(--text-muted); font-size:0.85rem;'>No offline notes saved yet.</p>";
-                    if(quizzesList.innerHTML === "") quizzesList.innerHTML = "<p style='color:var(--text-muted); font-size:0.85rem;'>No offline quizzes saved yet.</p>";
-                }
-            };
-        }
-
-
-        // ================= GEMINI API SANDBOX COMPONENT GENERATOR =================
-        async function requestAiRender(mode) {
-            const apiKey = localStorage.getItem('studysync_gemini_key');
-            if(!apiKey) { alert("Please paste your Gemini API Key first!"); return; }
-
-            const rawText = document.getElementById(mode === 'note' ? 'noteRawInput' : 'quizRawInput').value.trim();
-            if(!rawText) { alert("Please paste the plain text payload from NotebookLM first!"); return; }
-
-            const button = document.getElementById(mode === 'note' ? 'noteGenBtn' : 'quizGenBtn');
-            const saveButton = document.getElementById(mode === 'note' ? 'noteSaveBtn' : 'quizSaveBtn');
-            const iframe = document.getElementById(mode === 'note' ? 'noteIframe' : 'quizIframe');
-            const frameWrapper = document.getElementById(mode === 'note' ? 'noteSandboxFrame' : 'quizSandboxFrame');
-
-            button.disabled = true;
-            button.innerText = "⏳ Building Viewports...";
-            saveButton.style.display = 'none';
-
-            let systemInstruction = "";
-            if (mode === 'note') {
-                systemInstruction = "You are an expert full-stack web designer. Take this plain study note or structural layout table text input and format it into a gorgeous, highly readable note layout page. Wrap everything inside a single standalone index.html source script. Use clean CSS designs, modern responsive layout components, beautiful data tables featuring crisp padding/borders, highlighters, elegant custom list elements, professional typography, and broad responsive line spacing. Do NOT compress or skip text contents information, just format beautifully. Respond ONLY with the valid runnable HTML code block without backticks markdown wraps.";
-            } else {
-                systemInstruction = "You are a professional software engineering instructor. Take this quiz raw text and answer key input string array and compile an interactive web app component. Wrap everything inside a single self-contained complete index.html block containing standard semantic tags, custom modern embedded CSS styles, and robust dynamic JavaScript selection logic. The client logic must allow clicking selection list nodes, retaining choices, updating states on a 'Verify Answers' layout controller, evaluating answers against the key instantly, and mapping success (green) or danger (red) contextual backgrounds on selected nodes cleanly. Respond ONLY with valid, standalone executable HTML source code without any triple-backtick markdown blocks.";
-            }
-
-            try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{ text: systemInstruction + "\n\nInput Text:\n" + rawText }]
-                        }]
-                    })
-                });
-
-                const data = await response.json();
-                let generatedHtml = data.candidates[0].content.parts[0].text.trim();
-
-                if (generatedHtml.startsWith("```html")) generatedHtml = generatedHtml.substring(7, generatedHtml.lastIndexOf("```"));
-                else if (generatedHtml.startsWith("```")) generatedHtml = generatedHtml.substring(3, generatedHtml.lastIndexOf("```"));
-
-                // Store in memory so user can click 'Save' if they like it
-                if (mode === 'note') currentGeneratedNote = generatedHtml;
-                else currentGeneratedQuiz = generatedHtml;
-
-                iframe.srcdoc = generatedHtml;
-                frameWrapper.style.display = "flex";
-                saveButton.style.display = "flex"; // Reveal Save feature
-
-                showToast("✨ Premium interface built successfully!");
-
-            } catch (err) {
-                console.error(err);
-                alert("Gemini API Engine failure. Check console outputs or API configuration tokens.");
-            } finally {
-                button.disabled = false;
-                button.innerText = mode === 'note' ? "✨ Run AI Designer Layout" : "🚀 Build Active UI Quiz";
-            }
-        }
-
-        function renderApp() {
-            const targetContainer = document.getElementById('todayTarget');
-            const upcomingList = document.getElementById('upcomingList');
-            const completedList = document.getElementById('completedList');
-            
-            upcomingList.innerHTML = "";
-            completedList.innerHTML = "";
-
-            const total = curriculumData.length;
-            const remainingDays = total - currentIndex;
-            const percent = Math.round((currentIndex / total) * 100);
-
-            document.getElementById('widgetDays').innerText = remainingDays;
-            document.getElementById('widgetCompleted').innerText = `${currentIndex}/${total}`;
-            document.getElementById('widgetPercent').innerText = `${percent}%`;
-            document.getElementById('progressBar').style.width = `${percent}%`;
-
-            if (currentIndex >= total) {
-                targetContainer.innerHTML = `
-                    <h2 style="font-size: 2.2rem; margin-bottom: 6px;">👑</h2>
-                    <h2 class="unit-title">All Tracks Completed!</h2>
-                    <p style="color: var(--text-muted); font-size:0.9rem;">You completed all 57 syllabus items smoothly.</p>
-                `;
-            } else {
-                const currentUnit = curriculumData[currentIndex];
-                const safeTitle = currentUnit.title.replace(/'/g, "\\'");
-                
-                targetContainer.innerHTML = `
-                    <span class="badge ${currentUnit.subject}">${currentUnit.subject}</span>
-                    <h2 class="unit-title">${currentUnit.title}</h2>
-                    <p class="unit-grade">Grade ${currentUnit.grade}</p>
-                    <button class="action-btn" onclick="markComplete()">🎯 Mark Lesson Done</button>
-                    
-                    <div class="prompt-title">NotebookLM Configuration Setup Prompts:</div>
-                    <div class="prompt-grid">
-                        <button class="prompt-btn" onclick="copyPrompt('note', '${currentUnit.subject}', ${currentUnit.grade}, '${safeTitle}')"><span>📝</span> Notes</button>
-                        <button class="prompt-btn" onclick="copyPrompt('flashcard', '${currentUnit.subject}', ${currentUnit.grade}, '${safeTitle}')"><span>🃏</span> Flashcards</button>
-                        <button class="prompt-btn" onclick="copyPrompt('quiz', '${currentUnit.subject}', ${currentUnit.grade}, '${safeTitle}')"><span>❓</span> Quiz</button>
-                        <button class="prompt-btn" onclick="copyPrompt('terms', '${currentUnit.subject}', ${currentUnit.grade}, '${safeTitle}')"><span>📖</span> Terms</button>
-                        <button class="prompt-btn" onclick="copyPrompt('video', '${currentUnit.subject}', ${currentUnit.grade}, '${safeTitle}')"><span>🎬</span> Video</button>
-                        <button class="prompt-btn" onclick="copyPrompt('questions', '${currentUnit.subject}', ${currentUnit.grade}, '${safeTitle}')"><span>📋</span> Questions</button>
+            library.forEach(doc => {
+                const dateString = new Date(doc.dateAdded).toLocaleDateString();
+                const card = document.createElement('div');
+                card.className = 'lib-card';
+                card.innerHTML = `
+                    <div style="flex: 1;" onclick="openViewer('${doc.id}')">
+                        <div class="lib-title">${doc.title}</div>
+                        <div class="lib-meta">Added: ${dateString} • ${(doc.content.length / 1024).toFixed(1)} KB</div>
+                    </div>
+                    <div class="lib-actions">
+                        <button class="lib-btn" onclick="downloadHtmlDoc('${doc.id}')" title="Download Source">⬇️</button>
+                        <button class="lib-btn" onclick="deleteHtmlDoc('${doc.id}')" style="color: var(--danger);" title="Delete Module">🗑️</button>
                     </div>
                 `;
-            }
+                list.appendChild(card);
+            });
+        }
 
-            let upCount = 0;
+        function downloadHtmlDoc(id) {
+            const doc = library.find(item => item.id === id);
+            if (!doc) return;
+            const blob = new Blob([doc.content], { type: "text/html" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `${doc.title.replace(/\s+/g, '_')}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function deleteHtmlDoc(id) {
+            if (confirm("Are you sure you want to delete this module?")) {
+                library = library.filter(item => item.id !== id);
+                saveData();
+                renderLibrary();
+            }
+        }
+
+        function openViewer(id) {
+            const doc = library.find(item => item.id === id);
+            if (!doc) return;
+            document.getElementById('viewerTitle').innerText = doc.title;
+            document.getElementById('viewerBody').innerHTML = doc.content;
+            document.getElementById('documentViewer').style.display = 'flex';
+        }
+
+        function closeViewer() {
+            document.getElementById('documentViewer').style.display = 'none';
+            document.getElementById('viewerBody').innerHTML = '';
+        }
+
+        // ================= SECURITY GATEWAY ENGINE =================
+        let currentPinAttempt = "";
+        let isSettingPin = false;
+        let tempSetupPin = "";
+        
+        const savedPin = localStorage.getItem('lifesync_pin');
+        const hasBiometrics = localStorage.getItem('lifesync_bio_credential');
+
+        function initSecurityLifecycle() {
+            if (!savedPin) {
+                isSettingPin = true;
+                document.getElementById('lockSubtitle').innerText = "Create a master 4-digit PIN to secure your schedule.";
+                showPinPad();
+            } else {
+                if (hasBiometrics && window.PublicKeyCredential) {
+                    document.getElementById('lockSubtitle').innerText = "Verify your fingerprint or FaceID to open.";
+                    document.getElementById('bioView').style.display = "flex";
+                    document.getElementById('pinView').style.display = "none";
+                    setTimeout(triggerBiometrics, 350);
+                } else {
+                    document.getElementById('lockSubtitle').innerText = "Enter your PIN to access your planner.";
+                    showPinPad();
+                }
+            }
+        }
+
+        function showPinPad() {
+            document.getElementById('bioView').style.display = "none";
+            document.getElementById('pinView').style.display = "flex";
+            if (!isSettingPin) document.getElementById('lockSubtitle').innerText = "Enter your 4-digit security PIN.";
+        }
+
+        function pressPin(num) {
+            if (currentPinAttempt.length < 4) {
+                currentPinAttempt += num;
+                updatePinDots();
+                if (currentPinAttempt.length === 4) setTimeout(verifyPin, 150);
+            }
+        }
+
+        function deletePin() { if (currentPinAttempt.length > 0) { currentPinAttempt = currentPinAttempt.slice(0, -1); updatePinDots(); } }
+        function clearPin() { currentPinAttempt = ""; updatePinDots(); }
+
+        function updatePinDots() {
+            const dots = document.querySelectorAll('.pin-dot');
+            dots.forEach((dot, index) => {
+                dot.classList.remove('error');
+                if (index < currentPinAttempt.length) dot.classList.add('filled');
+                else dot.classList.remove('filled');
+            });
+        }
+
+        function pinError() {
+            document.querySelectorAll('.pin-dot').forEach(dot => dot.classList.add('error'));
+            setTimeout(clearPin, 400);
+        }
+
+        function verifyPin() {
+            if (isSettingPin) {
+                if (!tempSetupPin) {
+                    tempSetupPin = currentPinAttempt;
+                    document.getElementById('lockSubtitle').innerText = "Confirm your master PIN.";
+                    clearPin();
+                } else {
+                    if (currentPinAttempt === tempSetupPin) {
+                        localStorage.setItem('lifesync_pin', currentPinAttempt);
+                        unlockApp();
+                    } else {
+                        document.getElementById('lockSubtitle').innerText = "PINs did not match. Resetting setup...";
+                        tempSetupPin = "";
+                        pinError();
+                    }
+                }
+            } else {
+                if (currentPinAttempt === savedPin) unlockApp();
+                else pinError();
+            }
+        }
+
+        function unlockApp() {
+            document.getElementById('lockScreen').style.opacity = "0";
+            setTimeout(() => {
+                document.getElementById('lockScreen').style.display = "none";
+                document.getElementById('mainApp').classList.add('unlocked');
+            }, 300);
+        }
+
+        function lockApp() {
+            clearPin();
+            document.getElementById('lockScreen').style.display = "flex";
+            document.getElementById('mainApp').classList.remove('unlocked');
+            setTimeout(() => { document.getElementById('lockScreen').style.opacity = "1"; initSecurityLifecycle(); }, 50);
+        }
+
+        function generateRandomBuffer(length) {
+            const array = new Uint8Array(length);
+            window.crypto.getRandomValues(array);
+            return array;
+        }
+
+        async function enrollBiometrics() {
+            if (!window.PublicKeyCredential) { alert("Biometrics are not supported on this browser/device."); return; }
+            try {
+                const publicKey = {
+                    challenge: generateRandomBuffer(32),
+                    rp: { name: "LifeSync Tracker" },
+                    user: { id: generateRandomBuffer(16), name: "lifesync_user", displayName: "LifeSync User" },
+                    pubKeyCredParams: [{ type: "public-key", alg: -7 }, { type: "public-key", alg: -257 }],
+                    authenticatorSelection: { userVerification: "required" },
+                    timeout: 60000
+                };
+                const credential = await navigator.credentials.create({ publicKey });
+                const idBase64 = btoa(String.fromCharCode(...new Uint8Array(credential.rawId)));
+                localStorage.setItem('lifesync_bio_credential', idBase64);
+                alert("✅ Fingerprint/FaceID successfully linked!");
+            } catch (err) { alert("Biometric enrollment failed."); }
+        }
+
+        async function triggerBiometrics() {
+            const storedCredIdBase64 = localStorage.getItem('lifesync_bio_credential');
+            if (!storedCredIdBase64) return;
+            try {
+                const binaryId = Uint8Array.from(atob(storedCredIdBase64), c => c.charCodeAt(0));
+                const publicKey = {
+                    challenge: generateRandomBuffer(32),
+                    allowCredentials: [{ id: binaryId, type: "public-key" }],
+                    userVerification: "required",
+                    timeout: 60000
+                };
+                const assertion = await navigator.credentials.get({ publicKey });
+                if (assertion) unlockApp();
+            } catch (err) { showPinPad(); }
+        }
+
+        // ================= TIME, CALENDAR, NAVIGATION & STATS ENGINE =================
+        function getTodayString() {
+            const today = new Date();
+            return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        }
+
+        const TODAY_STR = getTodayString();
+        const TODAY_DAY_OF_WEEK = new Date().getDay();
+        if (!history[TODAY_STR]) history[TODAY_STR] = [];
+
+        function formatTime(timeStr) {
+            if (!timeStr) return "Anytime";
+            const [hours, minutes] = timeStr.split(':');
+            let h = parseInt(hours);
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12;
+            h = h ? h : 12;
+            return `${h}:${minutes} ${ampm}`;
+        }
+        
+        function getDaysBadgeString(daysArr) {
+            if (!daysArr || daysArr.length === 7) return "Everyday";
+            const names = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+            return daysArr.map(d => names[d]).join(', ');
+        }
+
+        if (localStorage.getItem('lifesync_theme') === 'dark') {
+            document.body.classList.add('dark');
+            document.getElementById('themeToggleBtn').innerText = "☀️";
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark');
+            const isDark = document.body.classList.contains('dark');
+            localStorage.setItem('lifesync_theme', isDark ? 'dark' : 'light');
+            document.getElementById('themeToggleBtn').innerText = isDark ? "☀️" : "🌙";
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.app-tab').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            document.getElementById(`btn-nav-${tabName}`).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            if (tabName === 'today') renderAgenda();
+            if (tabName === 'library') renderLibrary();
+            if (tabName === 'progress') renderStats();
+            if (tabName === 'plan') renderPlanner();
+        }
+
+        function renderAgenda() {
+            const pendingList = document.getElementById('pendingTasksList');
+            const completedList = document.getElementById('completedTasksList');
+            pendingList.innerHTML = ''; completedList.innerHTML = '';
+
+            let todaysAgenda = [];
+            habits.forEach(h => { if (!h.days || h.days.includes(TODAY_DAY_OF_WEEK)) todaysAgenda.push({ id: h.id, title: h.title, time: h.time || "00:00", type: 'daily' }); });
+            events.forEach(e => { if (e.date === TODAY_STR) todaysAgenda.push({ id: e.id, title: e.title, time: e.time || "00:00", type: 'event' }); });
+
+            todaysAgenda.sort((a, b) => a.time.localeCompare(b.time));
+
+            let pendingCount = 0;
             let doneCount = 0;
 
-            curriculumData.forEach((unit, index) => {
-                const layout = `
-                    <div class="unit-item ${index < currentIndex ? 'done' : ''}">
-                        <div>
-                            <h4>${unit.title}</h4>
-                            <p>${unit.subject} • Grade ${unit.grade}</p>
+            todaysAgenda.forEach(task => {
+                const isDone = history[TODAY_STR].includes(task.id);
+                const tagClass = task.type === 'daily' ? 'tag-daily' : 'tag-event';
+                const tagText = task.type === 'daily' ? 'ROUTINE' : 'ONE-TIME';
+
+                const taskHtml = `
+                    <div class="task-card ${isDone ? 'completed' : ''}" onclick="toggleTask('${task.id}')">
+                        <div class="checkbox-circle">${isDone ? '✓' : ''}</div>
+                        <div class="task-info">
+                            <div class="task-title">${task.title}</div>
+                            <div class="task-meta-row">
+                                <span class="task-tag ${tagClass}">${tagText}</span>
+                                <span class="task-time-badge">⏰ ${formatTime(task.time)}</span>
+                            </div>
                         </div>
-                        ${index < currentIndex ? '<span class="check-icon">✓</span>' : ''}
                     </div>
                 `;
-                if (index < currentIndex) {
-                    completedList.insertAdjacentHTML('afterbegin', layout);
-                    doneCount++;
-                } else if (index > currentIndex) {
-                    upcomingList.insertAdjacentHTML('beforeend', layout);
-                    upCount++;
-                }
+                if (isDone) { completedList.insertAdjacentHTML('beforeend', taskHtml); doneCount++; } 
+                else { pendingList.insertAdjacentHTML('beforeend', taskHtml); pendingCount++; }
             });
 
-            document.getElementById('upcomingCount').innerText = upCount;
-            document.getElementById('completedCount').innerText = doneCount;
+            if (pendingCount === 0 && todaysAgenda.length > 0) pendingList.innerHTML = `<div style="text-align:center; padding: 20px; color:var(--success); font-weight:bold;">🎉 All done for today! Great job!</div>`;
+            else if (todaysAgenda.length === 0) pendingList.innerHTML = `<div style="text-align:center; padding: 20px; color:var(--text-muted);">Nothing scheduled for today. Relax!</div>`;
 
-            if (upCount === 0) upcomingList.innerHTML = "<p style='color: var(--text-muted); font-size: 0.85rem; padding: 4px;'>No remaining modules.</p>";
-            if (doneCount === 0) completedList.innerHTML = "<p style='color: var(--text-muted); font-size: 0.85rem; padding: 4px;'>Completed lessons will show here.</p>";
+            if (doneCount === 0) completedList.innerHTML = `<div style="font-size: 0.85rem; color:var(--text-muted);">Nothing completed yet. Let's get to work!</div>`;
+
+            const hour = new Date().getHours();
+            let greeting = "Good Evening!";
+            if (hour < 12) greeting = "Good Morning!";
+            else if (hour < 17) greeting = "Good Afternoon!";
+            
+            const options = { weekday: 'long', month: 'short', day: 'numeric' };
+            document.getElementById('dateDisplay').innerText = new Date().toLocaleDateString('en-US', options);
+            document.getElementById('greetingDisplay').innerText = greeting;
+            
+            if (pendingCount === 0 && todaysAgenda.length > 0) document.getElementById('statusDisplay').innerText = "You crushed it today! Relax.";
+            else document.getElementById('statusDisplay').innerText = `You have ${pendingCount} task${pendingCount !== 1 ? 's' : ''} left on your plate.`;
+            
+            saveData(); 
         }
 
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js');
+        function toggleTask(id) {
+            const index = history[TODAY_STR].indexOf(id);
+            if (index > -1) history[TODAY_STR].splice(index, 1);
+            else history[TODAY_STR].push(id);
+            saveData(); renderAgenda(); renderStats(); 
+        }
+
+        function renderStats() {
+            let totalToday = 0;
+            habits.forEach(h => { if (!h.days || h.days.includes(TODAY_DAY_OF_WEEK)) totalToday++; });
+            events.forEach(e => { if (e.date === TODAY_STR) totalToday++; });
+            
+            let doneToday = history[TODAY_STR] ? history[TODAY_STR].length : 0;
+            let percent = totalToday === 0 ? 0 : Math.round((doneToday / totalToday) * 100);
+            
+            document.getElementById('progressRatio').innerText = `${doneToday} / ${totalToday} Tasks`;
+            document.getElementById('progressPercent').innerText = `${percent}%`;
+            document.getElementById('progressBar').style.width = `${percent}%`;
+
+            let totalEver = 0;
+            for (let date in history) totalEver += history[date].length;
+            document.getElementById('totalDoneDisplay').innerText = totalEver;
+
+            let currentStreak = 0;
+            let checkDate = new Date();
+            
+            while (true) {
+                let dateStr = `${checkDate.getFullYear()}-${String(checkDate.getMonth() + 1).padStart(2, '0')}-${String(checkDate.getDate()).padStart(2, '0')}`;
+                if (history[dateStr] && history[dateStr].length > 0) { currentStreak++; checkDate.setDate(checkDate.getDate() - 1); } 
+                else if (dateStr === TODAY_STR && currentStreak === 0) { checkDate.setDate(checkDate.getDate() - 1); } 
+                else break;
+            }
+            document.getElementById('streakDisplay').innerText = currentStreak;
+        }
+
+        function renderPlanner() {
+            const habitsList = document.getElementById('editHabitsList');
+            habits.sort((a,b) => (a.time || "00:00").localeCompare(b.time || "00:00"));
+            
+            habitsList.innerHTML = habits.map(h => `
+                <div class="edit-list-item">
+                    <div>
+                        <span style="font-weight: 600;">${h.title}</span>
+                        <div style="font-size:0.75rem; color:var(--text-muted); font-weight:bold; margin-top:2px;">
+                            ⏰ ${formatTime(h.time)} • ${getDaysBadgeString(h.days)}
+                        </div>
+                    </div>
+                    <button class="delete-btn" onclick="deleteHabit('${h.id}')">Delete</button>
+                </div>
+            `).join('');
+            if (habits.length === 0) habitsList.innerHTML = "<p style='color:var(--text-muted); font-size:0.8rem;'>No recurring habits set.</p>";
+
+            const eventsList = document.getElementById('editEventsList');
+            const futureEvents = events.filter(e => e.date >= TODAY_STR).sort((a, b) => {
+                if(a.date === b.date) return (a.time || "00:00").localeCompare(b.time || "00:00");
+                return a.date.localeCompare(b.date);
             });
+            
+            eventsList.innerHTML = futureEvents.map(e => `
+                <div class="edit-list-item">
+                    <div>
+                        <div style="font-weight: 600; font-size:0.9rem;">${e.title}</div>
+                        <div style="font-size: 0.75rem; color: var(--primary); font-weight:bold;">📅 ${e.date} @ ${formatTime(e.time)}</div>
+                    </div>
+                    <button class="delete-btn" onclick="deleteEvent('${e.id}')">Cancel</button>
+                </div>
+            `).join('');
+            if (futureEvents.length === 0) eventsList.innerHTML = "<p style='color:var(--text-muted); font-size:0.8rem;'>No upcoming events scheduled.</p>";
         }
 
-        renderApp();
+        function toggleDayPicker(btn) { btn.classList.toggle('active'); }
+        
+        function getSelectedDays() {
+            const days = [];
+            document.querySelectorAll('#newHabitDays .day-btn.active').forEach(btn => days.push(parseInt(btn.getAttribute('data-day'))));
+            return days;
+        }
+        function resetDayPicker() { document.querySelectorAll('#newHabitDays .day-btn').forEach(btn => btn.classList.add('active')); }
+
+        function addHabit() {
+            const input = document.getElementById('newHabitInput');
+            const timeInput = document.getElementById('newHabitTime');
+            const daysArr = getSelectedDays();
+            
+            if (!input.value.trim()) return;
+            if (daysArr.length === 0) { alert("Please select at least one day for this habit to occur."); return; }
+            
+            habits.push({ id: 'h_' + Date.now(), title: input.value.trim(), time: timeInput.value || "12:00", days: daysArr });
+            input.value = ''; timeInput.value = ''; resetDayPicker();
+            saveData(); renderPlanner(); renderAgenda();
+        }
+
+        function deleteHabit(id) { habits = habits.filter(h => h.id !== id); saveData(); renderPlanner(); renderAgenda(); }
+
+        function addEvent() {
+            const titleInput = document.getElementById('newEventTitle');
+            const dateInput = document.getElementById('newEventDate');
+            const timeInput = document.getElementById('newEventTime');
+            if (!titleInput.value.trim() || !dateInput.value) { alert("Please complete the title and date specifications."); return; }
+            events.push({ id: 'e_' + Date.now(), title: titleInput.value.trim(), date: dateInput.value, time: timeInput.value || "12:00" });
+            titleInput.value = ''; dateInput.value = ''; timeInput.value = '';
+            saveData(); renderPlanner(); renderAgenda();
+        }
+
+        function deleteEvent(id) { events = events.filter(e => e.id !== id); saveData(); renderPlanner(); renderAgenda(); }
+
+        if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js')); }
+
+        // Initial render loops
+        renderAgenda();
+        renderLibrary();
+        renderStats();
+        initSecurityLifecycle();
     </script>
 </body>
 </html>
